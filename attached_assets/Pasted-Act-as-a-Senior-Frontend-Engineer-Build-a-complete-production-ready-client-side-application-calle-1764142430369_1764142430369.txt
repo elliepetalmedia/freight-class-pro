@@ -1,0 +1,114 @@
+Act as a Senior Frontend Engineer. Build a complete, production-ready, client-side application called "FreightClassPro".
+
+1. FILE STRUCTURE
+Create the following files:
+- index.html
+- style.css
+- script.js
+- /pages/about.html
+- /pages/contact.html
+- /pages/privacy.html
+
+2. TECHNICAL REQUIREMENTS
+- Tech Stack: HTML5, CSS3, Vanilla JavaScript.
+- Persistence: Use `localStorage` to save the "Unit Preference" (Inches/CM) and last input values.
+- Constraint: No backend. All calculations happen in the browser.
+
+3. DESIGN SYSTEM (style.css)
+- Theme: "Industrial Logistics".
+- Colors: Background #0f172a (Dark Slate), Panel #1e293b, Border #334155, Accent #f59e0b (Safety Orange), Text #f1f5f9.
+- Typography: 'Roboto' (UI) and 'Roboto Mono' (Numbers).
+- Components:
+  - Calculator Card: High contrast, large input fields for warehouse visibility.
+  - Result Box: Prominent display of "Density" and "Class".
+  - Reference Table: A styled HTML table showing the Density-to-Class mapping.
+
+4. APPLICATION LOGIC (script.js)
+- Inputs:
+  - Dimensions: Length, Width, Height.
+  - Weight.
+  - Selectors: Units (Inches/Lbs vs CM/Kg), Palletized (Boolean toggle).
+- Logic:
+  1. Convert inputs to Imperial for calculation (CM -> Inches, Kg -> Lbs).
+  2. Calculate Volume (Cubic Feet): (L * W * H) / 1728.
+  3. Calculate Density (PCF - Pounds per Cubic Foot): Weight / Volume.
+  4. Determine Class based on Standard NMFC Density Guidelines:
+     - Density < 1: Class 400
+     - 1 <= Density < 2: Class 300
+     - 2 <= Density < 4: Class 250
+     - 4 <= Density < 6: Class 150
+     - 6 <= Density < 8: Class 125
+     - 8 <= Density < 10: Class 100
+     - 10 <= Density < 12: Class 92.5
+     - 12 <= Density < 15: Class 85
+     - 15 <= Density < 22.5: Class 70
+     - 22.5 <= Density < 30: Class 65
+     - 30 <= Density < 35: Class 60
+     - Density >= 35: Class 50
+- Output: Update DOM with calculated Density (2 decimal places) and Class.
+
+5. INDEX.HTML CONTENT
+- Header: Logo "FreightClassPro", Subtitle "LTL Density Calculator".
+- Disclaimer: Below the calculator, add small text: "Data Source: Based on standard guidelines from the National Motor Freight Traffic Association (NMFTA) and Commodity Classification Standards Board (CCSB)."
+- Main Layout: Two columns. Left: Calculator. Right: The Reference Table of classes.
+- SEO Article: Below the app, insert an `<article>` with this EXACT HTML:
+  """
+  <div style="max-width: 800px; margin: 4rem auto; padding: 0 1rem; color: #94a3b8; font-family: sans-serif;">
+    <h2 style="color: #f1f5f9;">Understanding Freight Classes (NMFC)</h2>
+    <p>In the LTL (Less-Than-Truckload) shipping industry, the cost of shipping is determined by the "Freight Class." This classification system was developed by the National Motor Freight Traffic Association (NMFTA) to establish fair pricing based on the transportability of goods.</p>
+
+    <h3 style="color: #f1f5f9;">How Density Impacts Price</h3>
+    <p>The lower the density of your shipment, the higher the Freight Class (and the higher the cost). For example, ping pong balls take up a lot of space but weigh very little (Class 500), whereas steel bolts are extremely heavy and compact (Class 50).</p>
+
+    <h3 style="color: #f1f5f9;">Avoiding Re-Classification Fees</h3>
+    <p>Carriers frequently re-weigh and re-measure pallets at terminals. If your Bill of Lading (BOL) lists an incorrect class (e.g., you guessed Class 70 but it's actually Class 100), the carrier will issue a "Re-Class Fee" adjustment. Using an accurate density calculator protects your profit margins.</p>
+  </div>
+  """
+- Footer: Links to `/pages/about.html`, `/pages/contact.html`, `/pages/privacy.html`. Copyright 2025 Ellie Petal Media.
+
+6. LEGAL PAGES (Generate these files with the EXACT content below)
+
+**File: /pages/about.html**
+<!DOCTYPE html>
+<html lang="en" style="background:#0f172a; color:#f1f5f9; font-family:sans-serif; padding:2rem;">
+<head><title>About Us</title><meta name="viewport" content="width=device-width, initial-scale=1"></head>
+<body>
+  <a href="/" style="color:#f59e0b; text-decoration:none;">&larr; Back to Calculator</a>
+  <h1 style="color:#f59e0b">About FreightClassPro</h1>
+  <p>FreightClassPro.com is a digital utility project published by <strong>Ellie Petal Media</strong>.</p>
+  <p>We built this tool for warehouse managers, logistics coordinators, and small business owners who need quick, accurate estimates without navigating complex carrier login portals. Our calculator uses the standard density formulas provided by the NMFTA to give you the most likely classification for your LTL shipments.</p>
+</body>
+</html>
+
+**File: /pages/contact.html**
+<!DOCTYPE html>
+<html lang="en" style="background:#0f172a; color:#f1f5f9; font-family:sans-serif; padding:2rem;">
+<head><title>Contact</title><meta name="viewport" content="width=device-width, initial-scale=1"></head>
+<body>
+  <a href="/" style="color:#f59e0b; text-decoration:none;">&larr; Back to Calculator</a>
+  <h1 style="color:#f59e0b">Contact Us</h1>
+  <p><strong>Publisher:</strong> Ellie Petal Media</p>
+  <h3>Support Policy</h3>
+  <p>This tool is provided for estimation purposes only. Always confirm final classification with your specific carrier as rules for commodities (like hazardous materials) may vary.</p>
+  <h3>Business Inquiries</h3>
+  <p>For advertising and legal matters, please contact: <strong>legal@freightclasspro.com</strong></p>
+</body>
+</html>
+
+**File: /pages/privacy.html**
+<!DOCTYPE html>
+<html lang="en" style="background:#0f172a; color:#f1f5f9; font-family:sans-serif; padding:2rem;">
+<head><title>Privacy Policy</title><meta name="viewport" content="width=device-width, initial-scale=1"></head>
+<body>
+  <a href="/" style="color:#f59e0b; text-decoration:none;">&larr; Back to Calculator</a>
+  <h1 style="color:#f59e0b">Privacy Policy</h1>
+  <p><strong>Last Updated:</strong> 2025</p>
+  <p>This Privacy Policy applies to FreightClassPro.com, published by Ellie Petal Media.</p>
+  <h3>1. Client-Side Calculation</h3>
+  <p>All density calculations happen locally in your web browser. We do not store your shipment dimensions, weights, or business data on our servers.</p>
+  <h3>2. Cookies</h3>
+  <p>We may use cookies to ensure the website functions correctly (e.g., remembering your preference for Inches vs. CM). By using this site, you consent to the use of cookies.</p>
+  <h3>3. Contact</h3>
+  <p>legal@freightclasspro.com</p>
+</body>
+</html>
