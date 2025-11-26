@@ -42,7 +42,7 @@ The application implements the NMFC density-to-class mapping algorithm:
 2. **Unit Conversion**: Converts metric inputs (cm/kg) to imperial (inches/lbs) for standardized calculation
 3. **Volume Calculation**: (Length × Width × Height) / 1728 = cubic feet
 4. **Density Calculation**: Weight (lbs) / Volume (cubic feet) = PCF (Pounds per Cubic Foot)
-5. **Class Determination**: Maps density to freight class using standard NMFC ranges (Class 50 to Class 400)
+5. **Class Determination**: Maps density to freight class using complete 18-class NMFC standard (Class 50 to Class 500)
 
 **Design Pattern**: Pure function calculations with React state hooks for UI updates. All computation happens client-side with no server dependencies.
 
@@ -111,9 +111,39 @@ Uses React Hook Form with Zod schemas (infrastructure present via dependencies) 
 - **Wouter**: Lightweight React router (~1.2KB)
 
 ### Additional Libraries
+- **jsPDF**: Client-side PDF generation for single and multi-load export
 - **date-fns**: Date manipulation utilities (available but not actively used in calculator)
 - **cmdk**: Command palette component (available via shadcn/ui)
 - **embla-carousel-react**: Carousel component library
+
+### NMFC Freight Class Table (Complete 18 Classes)
+| Density (PCF) | Class |
+|---------------|-------|
+| Less than 1 | 500 |
+| 1 to <2 | 400 |
+| 2 to <3 | 300 |
+| 3 to <4 | 250 |
+| 4 to <5 | 200 |
+| 5 to <6 | 175 |
+| 6 to <7 | 150 |
+| 7 to <8 | 125 |
+| 8 to <9 | 110 |
+| 9 to <10.5 | 100 |
+| 10.5 to <12 | 92.5 |
+| 12 to <13.5 | 85 |
+| 13.5 to <15 | 77.5 |
+| 15 to <22.5 | 70 |
+| 22.5 to <30 | 65 |
+| 30 to <35 | 60 |
+| 35 to <50 | 55 |
+| 50+ | 50 |
+
+### Key Features
+- **Quick Templates**: Pre-configured commodity templates (Electronics, Furniture, Machinery, Textiles)
+- **Multi-Load Tracking**: Save multiple calculations with custom names
+- **PDF Export**: Single calculation or consolidated multi-load reports with custom filenames
+- **Unit Toggle**: Switch between Imperial (in/lbs) and Metric (cm/kg)
+- **Palletized Mode**: Adjusted calculations for palletized freight
 
 ### Build Configuration
 - Path aliases configured: `@/` → `client/src/`, `@shared/` → `shared/`
