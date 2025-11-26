@@ -224,7 +224,7 @@ export default function Home() {
                       Units:
                     </Label>
                     <div className="flex items-center gap-2">
-                      <span className={`text-sm font-mono ${!inputs.useMetric ? 'text-primary font-semibold' : 'text-muted-foreground'}`}>
+                      <span className={`text-base md:text-lg font-mono ${!inputs.useMetric ? 'text-primary font-semibold' : 'text-muted-foreground'}`}>
                         in/lbs
                       </span>
                       <Switch
@@ -233,13 +233,13 @@ export default function Home() {
                         onCheckedChange={(checked) => handleInputChange("useMetric", checked)}
                         data-testid="switch-unit-toggle"
                       />
-                      <span className={`text-sm font-mono ${inputs.useMetric ? 'text-primary font-semibold' : 'text-muted-foreground'}`}>
+                      <span className={`text-base md:text-lg font-mono ${inputs.useMetric ? 'text-primary font-semibold' : 'text-muted-foreground'}`}>
                         cm/kg
                       </span>
                     </div>
                   </div>
                   <div className="flex items-center gap-3">
-                    <Label htmlFor="palletized-toggle" className="text-sm font-medium">
+                    <Label htmlFor="palletized-toggle" className="text-base md:text-lg font-medium">
                       Palletized:
                     </Label>
                     <Switch
@@ -443,7 +443,7 @@ export default function Home() {
                       </div>
                     </div>
                     <div className="text-center p-3 rounded-md bg-secondary/30" data-testid="result-volume-box">
-                      <p className="text-xs md:text-sm text-muted-foreground">
+                      <p className="text-sm md:text-base text-muted-foreground">
                         Volume: <span className="font-mono font-medium text-foreground" data-testid="text-volume">{result.volume}</span> cubic feet
                       </p>
                     </div>
