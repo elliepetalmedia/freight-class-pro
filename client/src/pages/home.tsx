@@ -5,7 +5,8 @@ import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Switch } from "@/components/ui/switch";
 import { Link } from "wouter";
-import { RotateCcw, Truck, Package, Calculator, Scale, Plus, Minus } from "lucide-react";
+import { RotateCcw, Truck, Package, Calculator, Scale, Plus, Minus, Download, ChevronDown } from "lucide-react";
+import { jsPDF } from "jspdf";
 
 const STORAGE_KEY = "freightClassPro";
 
@@ -53,6 +54,13 @@ const REFERENCE_TABLE_DATA = [
   { densityRange: "22.5 to less than 30", class: "65" },
   { densityRange: "30 to less than 35", class: "60" },
   { densityRange: "35 or greater", class: "50" },
+];
+
+const TEMPLATES = [
+  { name: "Electronics (Typical)", length: "24", width: "18", height: "12", weight: "45", metric: false },
+  { name: "Furniture (Couch)", length: "96", width: "36", height: "40", weight: "150", metric: false },
+  { name: "Machinery", length: "36", width: "24", height: "30", weight: "200", metric: false },
+  { name: "Textiles (Bolts)", length: "60", width: "48", height: "48", weight: "800", metric: false },
 ];
 
 function getFreightClass(density: number): string {
@@ -106,6 +114,9 @@ export default function Home() {
     freightClass: null,
     volume: null,
   });
+  const [showTemplates, setShowTemplates] = useState(false);
+  const [pdfFileName, setPdfFileName] = useState("");
+  const [showPdfDialog, setShowPdfDialog] = useState(false);
 
   const calculateDensity = useCallback(() => {
     const length = parseFloat(inputs.length);
@@ -185,6 +196,91 @@ export default function Home() {
     const newValue = Math.max(0, current - step);
     handleInputChange(field, newValue > 0 ? newValue.toString() : "");
   };
+
+  const applyTemplate = (template: typeof TEMPLATES[0]) => {
+    setInputs({
+      length: template.length,
+      width: template.width,
+      height: template.height,
+      weight: template.weight,
+      useMetric: template.metric,
+      palletized: inputs.palletized,
+    });
+    setShowTemplates(false);
+  };
+
+  const downloadPDF = () => {
+    if (!result.density || !result.freightClass) return;
+
+    const doc = new jsPDF();
+    const pageWidth = doc.internal.pageSize.getWidth();
+    const lineHeight = 8;
+    let yPos = 20;
+
+    doc.setFontSize(20);
+    doc.text("FreightClassPro", pageWidth / 2, yPos, { align: "center" });
+    yPos += 15;
+
+    doc.setFontSize(12);
+    doc.text("Freight Classification Report", pageWidth / 2, yPos, { align: "center" });
+    yPos += 12;
+
+    doc.setFontSize(10);
+    const date = new Date().toLocaleDateString();
+    doc.text(`Generated: ${date}`, 20, yPos);
+    yPos += 12;
+
+    doc.setDrawColor(200);
+    doc.line(20, yPos, pageWidth - 20, yPos);
+    yPos += 8;
+
+    doc.setFontSize(11);
+    doc.setFont(undefined, "bold");
+    doc.text("Shipment Details:", 20, yPos);
+    yPos += 8;
+
+    doc.setFont(undefined, "normal");
+    doc.setFontSize(10);
+    doc.text(`Length: ${inputs.length} ${dimensionUnit}`, 25, yPos);
+    yPos += lineHeight;
+    doc.text(`Width: ${inputs.width} ${dimensionUnit}`, 25, yPos);
+    yPos += lineHeight;
+    doc.text(`Height: ${inputs.height} ${dimensionUnit}`, 25, yPos);
+    yPos += lineHeight;
+    doc.text(`Weight: ${inputs.weight} ${weightUnit}`, 25, yPos);
+    yPos += lineHeight;
+    doc.text(`Palletized: ${inputs.palletized ? "Yes" : "No"}`, 25, yPos);
+    yPos += 12;
+
+    doc.setFont(undefined, "bold");
+    doc.text("Results:", 20, yPos);
+    yPos += 8;
+
+    doc.setFont(undefined, "normal");
+    doc.text(`Density: ${result.density} PCF`, 25, yPos);
+    yPos += lineHeight;
+    doc.text(`Volume: ${result.volume} cubic feet`, 25, yPos);
+    yPos += lineHeight;
+    doc.text(`Freight Class: ${result.freightClass}`, 25, yPos);
+    yPos += 12;
+
+    doc.setDrawColor(200);
+    doc.line(20, yPos, pageWidth - 20, yPos);
+    yPos += 8;
+
+    doc.setFontSize(8);
+    doc.setTextColor(150);
+    doc.text("Based on NMFC standards. For informational purposes only.", 20, pageHeight - 15, { maxWidth: pageWidth - 40 });
+
+    const fileName = pdfFileName.trim() || "freight-calculation";
+    const sanitized = fileName.replace(/[^a-z0-9-]/gi, "-").toLowerCase();
+    doc.save(`${sanitized}.pdf`);
+
+    setShowPdfDialog(false);
+    setPdfFileName("");
+  };
+
+  const pageHeight = 297;
 
   return (
     <div className="min-h-screen bg-background" data-testid="page-home">
@@ -408,15 +504,106 @@ export default function Home() {
                   </div>
                 </div>
 
-                <Button
-                  variant="secondary"
-                  onClick={handleReset}
-                  className="w-full h-12"
-                  data-testid="button-reset"
-                >
-                  <RotateCcw className="h-4 w-4 mr-2" />
-                  Reset All Values
-                </Button>
+                <div className="space-y-3">
+                  <Button
+                    variant="secondary"
+                    onClick={handleReset}
+                    className="w-full h-12"
+                    data-testid="button-reset"
+                  >
+                    <RotateCcw className="h-4 w-4 mr-2" />
+                    Reset All Values
+                  </Button>
+
+                  <div className="relative">
+                    <Button
+                      type="button"
+                      variant="outline"
+                      onClick={() => setShowTemplates(!showTemplates)}
+                      className="w-full h-12"
+                      data-testid="button-templates"
+                    >
+                      <Package className="h-4 w-4 mr-2" />
+                      Quick Templates
+                      <ChevronDown className="h-4 w-4 ml-auto" />
+                    </Button>
+
+                    {showTemplates && (
+                      <div className="absolute top-14 left-0 right-0 bg-card border border-border rounded-md shadow-lg z-10 p-2 space-y-2" data-testid="templates-menu">
+                        {TEMPLATES.map((template) => (
+                          <Button
+                            key={template.name}
+                            type="button"
+                            variant="ghost"
+                            onClick={() => applyTemplate(template)}
+                            className="w-full justify-start text-sm"
+                            data-testid={`template-${template.name}`}
+                          >
+                            {template.name}
+                          </Button>
+                        ))}
+                      </div>
+                    )}
+                  </div>
+
+                  {result.density !== null && (
+                    <Button
+                      type="button"
+                      variant="default"
+                      onClick={() => setShowPdfDialog(true)}
+                      className="w-full h-12 bg-primary hover:bg-primary/90"
+                      data-testid="button-download-pdf"
+                    >
+                      <Download className="h-4 w-4 mr-2" />
+                      Download PDF
+                    </Button>
+                  )}
+                </div>
+
+                {showPdfDialog && (
+                  <div className="fixed inset-0 bg-black/50 flex items-center justify-center z-50" data-testid="pdf-dialog-overlay">
+                    <Card className="border-border w-full max-w-sm mx-4" data-testid="pdf-dialog">
+                      <CardHeader>
+                        <CardTitle className="text-lg">Download Report</CardTitle>
+                      </CardHeader>
+                      <CardContent className="space-y-4">
+                        <div className="space-y-2">
+                          <Label htmlFor="pdf-name" className="text-sm">File Name (without .pdf)</Label>
+                          <Input
+                            id="pdf-name"
+                            type="text"
+                            placeholder="e.g., freight-calculation"
+                            value={pdfFileName}
+                            onChange={(e) => setPdfFileName(e.target.value)}
+                            className="h-10"
+                            data-testid="input-pdf-name"
+                          />
+                        </div>
+                        <div className="flex gap-2 justify-end">
+                          <Button
+                            type="button"
+                            variant="outline"
+                            onClick={() => {
+                              setShowPdfDialog(false);
+                              setPdfFileName("");
+                            }}
+                            data-testid="button-pdf-cancel"
+                          >
+                            Cancel
+                          </Button>
+                          <Button
+                            type="button"
+                            variant="default"
+                            onClick={downloadPDF}
+                            data-testid="button-pdf-confirm"
+                          >
+                            Download
+                          </Button>
+                        </div>
+                      </CardContent>
+                    </Card>
+                  </div>
+                )}
               </CardContent>
             </Card>
 
