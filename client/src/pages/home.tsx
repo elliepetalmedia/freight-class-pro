@@ -277,7 +277,8 @@ export default function Home() {
                           placeholder="0"
                           value={inputs.length}
                           onChange={(e) => handleInputChange("length", e.target.value)}
-                          className="h-10 text-2xl font-mono text-center flex-1"
+                          className="h-10 font-mono text-center flex-1"
+                          style={{ fontSize: "1.25rem" }}
                           data-testid="input-length"
                         />
                         <Button
@@ -312,7 +313,8 @@ export default function Home() {
                           placeholder="0"
                           value={inputs.width}
                           onChange={(e) => handleInputChange("width", e.target.value)}
-                          className="h-10 text-2xl font-mono text-center flex-1"
+                          className="h-10 font-mono text-center flex-1"
+                          style={{ fontSize: "1.25rem" }}
                           data-testid="input-width"
                         />
                         <Button
@@ -347,7 +349,8 @@ export default function Home() {
                           placeholder="0"
                           value={inputs.height}
                           onChange={(e) => handleInputChange("height", e.target.value)}
-                          className="h-10 text-2xl font-mono text-center flex-1"
+                          className="h-10 font-mono text-center flex-1"
+                          style={{ fontSize: "1.25rem" }}
                           data-testid="input-height"
                         />
                         <Button
@@ -388,7 +391,8 @@ export default function Home() {
                       placeholder="0"
                       value={inputs.weight}
                       onChange={(e) => handleInputChange("weight", e.target.value)}
-                      className="h-10 text-2xl font-mono text-center flex-1"
+                      className="h-10 font-mono text-center flex-1"
+                      style={{ fontSize: "1.25rem" }}
                       data-testid="input-weight"
                     />
                     <Button
