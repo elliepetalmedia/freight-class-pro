@@ -46,21 +46,11 @@ const FREIGHT_CLASS_TABLE = [
   { minDensity: 8, maxDensity: 9, class: "110" },
   { minDensity: 7, maxDensity: 8, class: "125" },
   { minDensity: 6, maxDensity: 7, class: "150" },
-  { minDensity: 5, maxDensity: 6, class: "175" },
-  { minDensity: 4, maxDensity: 5, class: "200" },
-  { minDensity: 3, maxDensity: 4, class: "250" },
-  { minDensity: 2, maxDensity: 3, class: "300" },
-  { minDensity: 1, maxDensity: 2, class: "400" },
-  { minDensity: 0, maxDensity: 1, class: "500" },
+  { minDensity: 4, maxDensity: 6, class: "175" },
 ];
 
 const REFERENCE_TABLE_DATA = [
-  { densityRange: "Less than 1", class: "500" },
-  { densityRange: "1 to less than 2", class: "400" },
-  { densityRange: "2 to less than 3", class: "300" },
-  { densityRange: "3 to less than 4", class: "250" },
-  { densityRange: "4 to less than 5", class: "200" },
-  { densityRange: "5 to less than 6", class: "175" },
+  { densityRange: "4 to less than 6", class: "175" },
   { densityRange: "6 to less than 7", class: "150" },
   { densityRange: "7 to less than 8", class: "125" },
   { densityRange: "8 to less than 9", class: "110" },
@@ -88,7 +78,7 @@ function getFreightClass(density: number): string {
       return range.class;
     }
   }
-  return "500";
+  return "175+";
 }
 
 function loadFromStorage(): CalculatorInputs {
@@ -929,6 +919,13 @@ export default function Home() {
                         Volume: <span className="font-mono font-medium text-foreground" data-testid="text-volume">{result.volume}</span> cubic feet
                       </p>
                     </div>
+                    {result.freightClass === "175+" && (
+                      <div className="p-3 rounded-md bg-amber-500/10 border border-amber-500/30" data-testid="low-density-notice">
+                        <p className="text-xs md:text-sm text-amber-600 dark:text-amber-400">
+                          Density below 4 PCF falls outside the standard 13-tier density scale. Contact your carrier for classification based on commodity type, handling, and liability factors.
+                        </p>
+                      </div>
+                    )}
                   </div>
                 ) : (
                   <div className="text-center py-6 md:py-8" data-testid="results-empty-state">
@@ -1005,7 +1002,7 @@ export default function Home() {
             How Density Impacts Price
           </h3>
           <p className="text-muted-foreground mb-6 leading-relaxed">
-            The lower the density of your shipment, the higher the Freight Class (and the higher the cost). For example, ping pong balls take up a lot of space but weigh very little (Class 500), whereas steel bolts are extremely heavy and compact (Class 50).
+            The NMFC uses a 13-tier density-based classification system (Classes 50-175) for standard commodities. Lower density means higher Freight Class and higher shipping costs. Items below 4 PCF density may require carrier review for handling, stowability, and liability factors.
           </p>
 
           <h3 className="text-lg md:text-xl font-semibold text-foreground mb-3" data-testid="heading-reclass">

@@ -116,15 +116,12 @@ Uses React Hook Form with Zod schemas (infrastructure present via dependencies) 
 - **cmdk**: Command palette component (available via shadcn/ui)
 - **embla-carousel-react**: Carousel component library
 
-### NMFC Freight Class Table (Complete 18 Classes)
+### NMFC Freight Class Table (13-Tier Density-Based System)
+The calculator uses the NMFC 13-tier density-based classification system effective July 2025. This system applies to standard commodities where density is the primary classification factor.
+
 | Density (PCF) | Class |
 |---------------|-------|
-| Less than 1 | 500 |
-| 1 to <2 | 400 |
-| 2 to <3 | 300 |
-| 3 to <4 | 250 |
-| 4 to <5 | 200 |
-| 5 to <6 | 175 |
+| 4 to <6 | 175 |
 | 6 to <7 | 150 |
 | 7 to <8 | 125 |
 | 8 to <9 | 110 |
@@ -137,6 +134,8 @@ Uses React Hook Form with Zod schemas (infrastructure present via dependencies) 
 | 30 to <35 | 60 |
 | 35 to <50 | 55 |
 | 50+ | 50 |
+
+**Note:** Items with density below 4 PCF fall outside the standard density-based scale and require carrier review for classification based on commodity type, handling, stowability, and liability factors.
 
 ### Key Features
 - **Quick Templates**: Pre-configured commodity templates (Electronics, Furniture, Machinery, Textiles)
