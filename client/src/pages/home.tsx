@@ -278,7 +278,7 @@ export default function Home() {
                           value={inputs.length}
                           onChange={(e) => handleInputChange("length", e.target.value)}
                           className="h-10 font-mono text-center flex-1"
-                          style={{ fontSize: "1.25rem" }}
+                          style={{ fontSize: "1.5rem" }}
                           data-testid="input-length"
                         />
                         <Button
@@ -314,7 +314,7 @@ export default function Home() {
                           value={inputs.width}
                           onChange={(e) => handleInputChange("width", e.target.value)}
                           className="h-10 font-mono text-center flex-1"
-                          style={{ fontSize: "1.25rem" }}
+                          style={{ fontSize: "1.5rem" }}
                           data-testid="input-width"
                         />
                         <Button
@@ -350,7 +350,7 @@ export default function Home() {
                           value={inputs.height}
                           onChange={(e) => handleInputChange("height", e.target.value)}
                           className="h-10 font-mono text-center flex-1"
-                          style={{ fontSize: "1.25rem" }}
+                          style={{ fontSize: "1.5rem" }}
                           data-testid="input-height"
                         />
                         <Button
@@ -392,7 +392,7 @@ export default function Home() {
                       value={inputs.weight}
                       onChange={(e) => handleInputChange("weight", e.target.value)}
                       className="h-10 font-mono text-center flex-1"
-                      style={{ fontSize: "1.25rem" }}
+                      style={{ fontSize: "1.5rem" }}
                       data-testid="input-weight"
                     />
                     <Button
