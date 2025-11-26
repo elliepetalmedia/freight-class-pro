@@ -39,29 +39,40 @@ const FREIGHT_CLASS_TABLE = [
   { minDensity: 30, maxDensity: 35, class: "60" },
   { minDensity: 22.5, maxDensity: 30, class: "65" },
   { minDensity: 15, maxDensity: 22.5, class: "70" },
-  { minDensity: 12, maxDensity: 15, class: "85" },
-  { minDensity: 10, maxDensity: 12, class: "92.5" },
-  { minDensity: 8, maxDensity: 10, class: "100" },
-  { minDensity: 6, maxDensity: 8, class: "125" },
-  { minDensity: 4, maxDensity: 6, class: "150" },
-  { minDensity: 2, maxDensity: 4, class: "250" },
-  { minDensity: 1, maxDensity: 2, class: "300" },
-  { minDensity: 0, maxDensity: 1, class: "400" },
+  { minDensity: 13.5, maxDensity: 15, class: "77.5" },
+  { minDensity: 12, maxDensity: 13.5, class: "85" },
+  { minDensity: 10.5, maxDensity: 12, class: "92.5" },
+  { minDensity: 9, maxDensity: 10.5, class: "100" },
+  { minDensity: 8, maxDensity: 9, class: "110" },
+  { minDensity: 7, maxDensity: 8, class: "125" },
+  { minDensity: 6, maxDensity: 7, class: "150" },
+  { minDensity: 5, maxDensity: 6, class: "175" },
+  { minDensity: 4, maxDensity: 5, class: "200" },
+  { minDensity: 3, maxDensity: 4, class: "250" },
+  { minDensity: 2, maxDensity: 3, class: "300" },
+  { minDensity: 1, maxDensity: 2, class: "400" },
+  { minDensity: 0, maxDensity: 1, class: "500" },
 ];
 
 const REFERENCE_TABLE_DATA = [
-  { densityRange: "Less than 1", class: "400" },
-  { densityRange: "1 to less than 2", class: "300" },
-  { densityRange: "2 to less than 4", class: "250" },
-  { densityRange: "4 to less than 6", class: "150" },
-  { densityRange: "6 to less than 8", class: "125" },
-  { densityRange: "8 to less than 10", class: "100" },
-  { densityRange: "10 to less than 12", class: "92.5" },
-  { densityRange: "12 to less than 15", class: "85" },
+  { densityRange: "Less than 1", class: "500" },
+  { densityRange: "1 to less than 2", class: "400" },
+  { densityRange: "2 to less than 3", class: "300" },
+  { densityRange: "3 to less than 4", class: "250" },
+  { densityRange: "4 to less than 5", class: "200" },
+  { densityRange: "5 to less than 6", class: "175" },
+  { densityRange: "6 to less than 7", class: "150" },
+  { densityRange: "7 to less than 8", class: "125" },
+  { densityRange: "8 to less than 9", class: "110" },
+  { densityRange: "9 to less than 10.5", class: "100" },
+  { densityRange: "10.5 to less than 12", class: "92.5" },
+  { densityRange: "12 to less than 13.5", class: "85" },
+  { densityRange: "13.5 to less than 15", class: "77.5" },
   { densityRange: "15 to less than 22.5", class: "70" },
   { densityRange: "22.5 to less than 30", class: "65" },
   { densityRange: "30 to less than 35", class: "60" },
-  { densityRange: "35 or greater", class: "50" },
+  { densityRange: "35 to less than 50", class: "55" },
+  { densityRange: "50 or greater", class: "50" },
 ];
 
 const TEMPLATES = [
@@ -77,7 +88,7 @@ function getFreightClass(density: number): string {
       return range.class;
     }
   }
-  return "400";
+  return "500";
 }
 
 function loadFromStorage(): CalculatorInputs {
