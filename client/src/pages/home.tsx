@@ -5,7 +5,7 @@ import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Switch } from "@/components/ui/switch";
 import { Link } from "wouter";
-import { RotateCcw, Truck, Package, Calculator, Scale, Plus, Minus, Download, ChevronDown } from "lucide-react";
+import { RotateCcw, Truck, Package, Calculator, Scale, Plus, Minus, Download, ChevronDown, Save, Trash2, FileText, X } from "lucide-react";
 import { jsPDF } from "jspdf";
 
 const STORAGE_KEY = "freightClassPro";
@@ -23,6 +23,14 @@ interface CalculationResult {
   density: number | null;
   freightClass: string | null;
   volume: number | null;
+}
+
+interface SavedLoad {
+  id: string;
+  name: string;
+  inputs: CalculatorInputs;
+  result: CalculationResult;
+  timestamp: number;
 }
 
 const FREIGHT_CLASS_TABLE = [
@@ -117,6 +125,11 @@ export default function Home() {
   const [showTemplates, setShowTemplates] = useState(false);
   const [pdfFileName, setPdfFileName] = useState("");
   const [showPdfDialog, setShowPdfDialog] = useState(false);
+  const [savedLoads, setSavedLoads] = useState<SavedLoad[]>([]);
+  const [loadName, setLoadName] = useState("");
+  const [showSaveDialog, setShowSaveDialog] = useState(false);
+  const [showMultiPdfDialog, setShowMultiPdfDialog] = useState(false);
+  const [multiPdfFileName, setMultiPdfFileName] = useState("");
 
   const calculateDensity = useCallback(() => {
     const length = parseFloat(inputs.length);
@@ -235,11 +248,11 @@ export default function Home() {
     yPos += 8;
 
     doc.setFontSize(11);
-    doc.setFont(undefined, "bold");
+    doc.setFont("helvetica", "bold");
     doc.text("Shipment Details:", 20, yPos);
     yPos += 8;
 
-    doc.setFont(undefined, "normal");
+    doc.setFont("helvetica", "normal");
     doc.setFontSize(10);
     doc.text(`Length: ${inputs.length} ${dimensionUnit}`, 25, yPos);
     yPos += lineHeight;
@@ -252,11 +265,11 @@ export default function Home() {
     doc.text(`Palletized: ${inputs.palletized ? "Yes" : "No"}`, 25, yPos);
     yPos += 12;
 
-    doc.setFont(undefined, "bold");
+    doc.setFont("helvetica", "bold");
     doc.text("Results:", 20, yPos);
     yPos += 8;
 
-    doc.setFont(undefined, "normal");
+    doc.setFont("helvetica", "normal");
     doc.text(`Density: ${result.density} PCF`, 25, yPos);
     yPos += lineHeight;
     doc.text(`Volume: ${result.volume} cubic feet`, 25, yPos);
@@ -268,9 +281,10 @@ export default function Home() {
     doc.line(20, yPos, pageWidth - 20, yPos);
     yPos += 8;
 
+    const docPageHeight = doc.internal.pageSize.getHeight();
     doc.setFontSize(8);
     doc.setTextColor(150);
-    doc.text("Based on NMFC standards. For informational purposes only.", 20, pageHeight - 15, { maxWidth: pageWidth - 40 });
+    doc.text("Based on NMFC standards. For informational purposes only.", 20, docPageHeight - 15, { maxWidth: pageWidth - 40 });
 
     const fileName = pdfFileName.trim() || "freight-calculation";
     const sanitized = fileName.replace(/[^a-z0-9-]/gi, "-").toLowerCase();
@@ -280,7 +294,107 @@ export default function Home() {
     setPdfFileName("");
   };
 
-  const pageHeight = 297;
+  const saveCurrentLoad = () => {
+    if (!result.density || !result.freightClass) return;
+    
+    const newLoad: SavedLoad = {
+      id: Date.now().toString(),
+      name: loadName.trim() || `Load ${savedLoads.length + 1}`,
+      inputs: { ...inputs },
+      result: { ...result },
+      timestamp: Date.now(),
+    };
+    
+    setSavedLoads(prev => [...prev, newLoad]);
+    setLoadName("");
+    setShowSaveDialog(false);
+  };
+
+  const removeLoad = (id: string) => {
+    setSavedLoads(prev => prev.filter(load => load.id !== id));
+  };
+
+  const clearAllLoads = () => {
+    setSavedLoads([]);
+  };
+
+  const downloadMultiLoadPDF = () => {
+    if (savedLoads.length === 0) return;
+
+    const doc = new jsPDF();
+    const pageWidth = doc.internal.pageSize.getWidth();
+    const docPageHeight = doc.internal.pageSize.getHeight();
+    const lineHeight = 6;
+    const margin = 20;
+    let yPos = 20;
+
+    doc.setFontSize(20);
+    doc.text("FreightClassPro", pageWidth / 2, yPos, { align: "center" });
+    yPos += 12;
+
+    doc.setFontSize(14);
+    doc.text("Multi-Load Freight Report", pageWidth / 2, yPos, { align: "center" });
+    yPos += 10;
+
+    doc.setFontSize(10);
+    const date = new Date().toLocaleDateString();
+    doc.text(`Generated: ${date} | Total Loads: ${savedLoads.length}`, margin, yPos);
+    yPos += 10;
+
+    doc.setDrawColor(200);
+    doc.line(margin, yPos, pageWidth - margin, yPos);
+    yPos += 8;
+
+    savedLoads.forEach((load, index) => {
+      if (yPos > docPageHeight - 60) {
+        doc.addPage();
+        yPos = 20;
+      }
+
+      const loadDimUnit = load.inputs.useMetric ? "cm" : "in";
+      const loadWtUnit = load.inputs.useMetric ? "kg" : "lbs";
+
+      doc.setFontSize(12);
+      doc.setFont("helvetica", "bold");
+      doc.text(`${index + 1}. ${load.name}`, margin, yPos);
+      yPos += 8;
+
+      doc.setFontSize(9);
+      doc.setFont("helvetica", "normal");
+      
+      const col1 = margin + 5;
+      const col2 = pageWidth / 2;
+      
+      doc.text(`Dimensions: ${load.inputs.length} x ${load.inputs.width} x ${load.inputs.height} ${loadDimUnit}`, col1, yPos);
+      doc.text(`Density: ${load.result.density} PCF`, col2, yPos);
+      yPos += lineHeight;
+      
+      doc.text(`Weight: ${load.inputs.weight} ${loadWtUnit}`, col1, yPos);
+      doc.text(`Volume: ${load.result.volume} cu ft`, col2, yPos);
+      yPos += lineHeight;
+      
+      doc.text(`Palletized: ${load.inputs.palletized ? "Yes" : "No"}`, col1, yPos);
+      doc.setFont("helvetica", "bold");
+      doc.text(`Freight Class: ${load.result.freightClass}`, col2, yPos);
+      doc.setFont("helvetica", "normal");
+      yPos += 10;
+
+      doc.setDrawColor(230);
+      doc.line(margin, yPos, pageWidth - margin, yPos);
+      yPos += 8;
+    });
+
+    doc.setFontSize(8);
+    doc.setTextColor(150);
+    doc.text("Based on NMFC standards. For informational purposes only.", margin, docPageHeight - 10, { maxWidth: pageWidth - margin * 2 });
+
+    const fileName = multiPdfFileName.trim() || "multi-load-report";
+    const sanitized = fileName.replace(/[^a-z0-9-]/gi, "-").toLowerCase();
+    doc.save(`${sanitized}.pdf`);
+
+    setShowMultiPdfDialog(false);
+    setMultiPdfFileName("");
+  };
 
   return (
     <div className="min-h-screen bg-background" data-testid="page-home">
@@ -547,16 +661,28 @@ export default function Home() {
                   </div>
 
                   {result.density !== null && (
-                    <Button
-                      type="button"
-                      variant="default"
-                      onClick={() => setShowPdfDialog(true)}
-                      className="w-full h-12 bg-primary hover:bg-primary/90"
-                      data-testid="button-download-pdf"
-                    >
-                      <Download className="h-4 w-4 mr-2" />
-                      Download PDF
-                    </Button>
+                    <>
+                      <Button
+                        type="button"
+                        variant="default"
+                        onClick={() => setShowPdfDialog(true)}
+                        className="w-full h-12 bg-primary hover:bg-primary/90"
+                        data-testid="button-download-pdf"
+                      >
+                        <Download className="h-4 w-4 mr-2" />
+                        Download PDF
+                      </Button>
+                      <Button
+                        type="button"
+                        variant="outline"
+                        onClick={() => setShowSaveDialog(true)}
+                        className="w-full h-12"
+                        data-testid="button-save-load"
+                      >
+                        <Save className="h-4 w-4 mr-2" />
+                        Save to Multi-Load
+                      </Button>
+                    </>
                   )}
                 </div>
 
@@ -604,8 +730,166 @@ export default function Home() {
                     </Card>
                   </div>
                 )}
+
+                {showSaveDialog && (
+                  <div className="fixed inset-0 bg-black/50 flex items-center justify-center z-50" data-testid="save-dialog-overlay">
+                    <Card className="border-border w-full max-w-sm mx-4" data-testid="save-dialog">
+                      <CardHeader>
+                        <CardTitle className="text-lg">Save Load</CardTitle>
+                      </CardHeader>
+                      <CardContent className="space-y-4">
+                        <div className="space-y-2">
+                          <Label htmlFor="load-name" className="text-sm">Load Name (optional)</Label>
+                          <Input
+                            id="load-name"
+                            type="text"
+                            placeholder={`Load ${savedLoads.length + 1}`}
+                            value={loadName}
+                            onChange={(e) => setLoadName(e.target.value)}
+                            className="h-10"
+                            data-testid="input-load-name"
+                          />
+                        </div>
+                        <div className="flex gap-2 justify-end">
+                          <Button
+                            type="button"
+                            variant="outline"
+                            onClick={() => {
+                              setShowSaveDialog(false);
+                              setLoadName("");
+                            }}
+                            data-testid="button-save-cancel"
+                          >
+                            Cancel
+                          </Button>
+                          <Button
+                            type="button"
+                            variant="default"
+                            onClick={saveCurrentLoad}
+                            data-testid="button-save-confirm"
+                          >
+                            Save Load
+                          </Button>
+                        </div>
+                      </CardContent>
+                    </Card>
+                  </div>
+                )}
+
+                {showMultiPdfDialog && (
+                  <div className="fixed inset-0 bg-black/50 flex items-center justify-center z-50" data-testid="multi-pdf-dialog-overlay">
+                    <Card className="border-border w-full max-w-sm mx-4" data-testid="multi-pdf-dialog">
+                      <CardHeader>
+                        <CardTitle className="text-lg">Export All Loads</CardTitle>
+                      </CardHeader>
+                      <CardContent className="space-y-4">
+                        <div className="space-y-2">
+                          <Label htmlFor="multi-pdf-name" className="text-sm">File Name (without .pdf)</Label>
+                          <Input
+                            id="multi-pdf-name"
+                            type="text"
+                            placeholder="e.g., multi-load-report"
+                            value={multiPdfFileName}
+                            onChange={(e) => setMultiPdfFileName(e.target.value)}
+                            className="h-10"
+                            data-testid="input-multi-pdf-name"
+                          />
+                        </div>
+                        <div className="flex gap-2 justify-end">
+                          <Button
+                            type="button"
+                            variant="outline"
+                            onClick={() => {
+                              setShowMultiPdfDialog(false);
+                              setMultiPdfFileName("");
+                            }}
+                            data-testid="button-multi-pdf-cancel"
+                          >
+                            Cancel
+                          </Button>
+                          <Button
+                            type="button"
+                            variant="default"
+                            onClick={downloadMultiLoadPDF}
+                            data-testid="button-multi-pdf-confirm"
+                          >
+                            Download
+                          </Button>
+                        </div>
+                      </CardContent>
+                    </Card>
+                  </div>
+                )}
               </CardContent>
             </Card>
+
+            {savedLoads.length > 0 && (
+              <Card className="border-border mt-6" data-testid="card-saved-loads">
+                <CardHeader className="pb-3">
+                  <div className="flex items-center justify-between gap-2 flex-wrap">
+                    <CardTitle className="flex items-center gap-2 text-lg" data-testid="title-saved-loads">
+                      <FileText className="h-5 w-5 text-primary" />
+                      Saved Loads ({savedLoads.length})
+                    </CardTitle>
+                    <div className="flex gap-2">
+                      <Button
+                        type="button"
+                        variant="outline"
+                        size="sm"
+                        onClick={clearAllLoads}
+                        data-testid="button-clear-all"
+                      >
+                        <Trash2 className="h-3 w-3 mr-1" />
+                        Clear All
+                      </Button>
+                      <Button
+                        type="button"
+                        variant="default"
+                        size="sm"
+                        onClick={() => setShowMultiPdfDialog(true)}
+                        data-testid="button-export-all"
+                      >
+                        <Download className="h-3 w-3 mr-1" />
+                        Export All
+                      </Button>
+                    </div>
+                  </div>
+                </CardHeader>
+                <CardContent className="space-y-3">
+                  {savedLoads.map((load, index) => (
+                    <div
+                      key={load.id}
+                      className="flex items-center justify-between gap-3 p-3 rounded-md bg-secondary/30 border border-border"
+                      data-testid={`saved-load-${load.id}`}
+                    >
+                      <div className="flex-1 min-w-0">
+                        <p className="font-medium text-sm truncate" data-testid={`load-name-${load.id}`}>
+                          {index + 1}. {load.name}
+                        </p>
+                        <p className="text-xs text-muted-foreground">
+                          {load.inputs.length}×{load.inputs.width}×{load.inputs.height} {load.inputs.useMetric ? 'cm' : 'in'} | {load.inputs.weight} {load.inputs.useMetric ? 'kg' : 'lbs'}
+                        </p>
+                      </div>
+                      <div className="flex items-center gap-2">
+                        <span className="font-mono font-bold text-primary text-sm" data-testid={`load-class-${load.id}`}>
+                          Class {load.result.freightClass}
+                        </span>
+                        <Button
+                          type="button"
+                          size="icon"
+                          variant="ghost"
+                          onClick={() => removeLoad(load.id)}
+                          className="h-8 w-8"
+                          data-testid={`button-remove-load-${load.id}`}
+                        >
+                          <X className="h-4 w-4" />
+                        </Button>
+                      </div>
+                    </div>
+                  ))}
+                </CardContent>
+              </Card>
+            )}
 
             <Card className={`border-2 transition-all duration-300 ${result.density !== null ? 'border-primary bg-card' : 'border-border bg-secondary/20'}`} data-testid="card-results">
               <CardContent className="p-6 md:p-8">
