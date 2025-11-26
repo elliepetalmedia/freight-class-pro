@@ -39,29 +39,29 @@ const FREIGHT_CLASS_TABLE = [
   { minDensity: 30, maxDensity: 35, class: "60" },
   { minDensity: 22.5, maxDensity: 30, class: "65" },
   { minDensity: 15, maxDensity: 22.5, class: "70" },
-  { minDensity: 13.5, maxDensity: 15, class: "77.5" },
-  { minDensity: 12, maxDensity: 13.5, class: "85" },
-  { minDensity: 10.5, maxDensity: 12, class: "92.5" },
-  { minDensity: 9, maxDensity: 10.5, class: "100" },
-  { minDensity: 8, maxDensity: 9, class: "110" },
-  { minDensity: 7, maxDensity: 8, class: "125" },
-  { minDensity: 6, maxDensity: 7, class: "150" },
+  { minDensity: 12, maxDensity: 15, class: "85" },
+  { minDensity: 10, maxDensity: 12, class: "92.5" },
+  { minDensity: 8, maxDensity: 10, class: "100" },
+  { minDensity: 6, maxDensity: 8, class: "125" },
   { minDensity: 4, maxDensity: 6, class: "175" },
+  { minDensity: 2, maxDensity: 4, class: "250" },
+  { minDensity: 1, maxDensity: 2, class: "300" },
+  { minDensity: 0, maxDensity: 1, class: "400" },
 ];
 
 const REFERENCE_TABLE_DATA = [
-  { densityRange: "4 to less than 6", class: "175" },
-  { densityRange: "6 to less than 7", class: "150" },
-  { densityRange: "7 to less than 8", class: "125" },
-  { densityRange: "8 to less than 9", class: "110" },
-  { densityRange: "9 to less than 10.5", class: "100" },
-  { densityRange: "10.5 to less than 12", class: "92.5" },
-  { densityRange: "12 to less than 13.5", class: "85" },
-  { densityRange: "13.5 to less than 15", class: "77.5" },
-  { densityRange: "15 to less than 22.5", class: "70" },
-  { densityRange: "22.5 to less than 30", class: "65" },
-  { densityRange: "30 to less than 35", class: "60" },
-  { densityRange: "35 to less than 50", class: "55" },
+  { densityRange: "Less than 1", class: "400" },
+  { densityRange: "1 but less than 2", class: "300" },
+  { densityRange: "2 but less than 4", class: "250" },
+  { densityRange: "4 but less than 6", class: "175" },
+  { densityRange: "6 but less than 8", class: "125" },
+  { densityRange: "8 but less than 10", class: "100" },
+  { densityRange: "10 but less than 12", class: "92.5" },
+  { densityRange: "12 but less than 15", class: "85" },
+  { densityRange: "15 but less than 22.5", class: "70" },
+  { densityRange: "22.5 but less than 30", class: "65" },
+  { densityRange: "30 but less than 35", class: "60" },
+  { densityRange: "35 but less than 50", class: "55" },
   { densityRange: "50 or greater", class: "50" },
 ];
 
@@ -78,7 +78,7 @@ function getFreightClass(density: number): string {
       return range.class;
     }
   }
-  return "175+";
+  return "400";
 }
 
 function loadFromStorage(): CalculatorInputs {
@@ -919,13 +919,6 @@ export default function Home() {
                         Volume: <span className="font-mono font-medium text-foreground" data-testid="text-volume">{result.volume}</span> cubic feet
                       </p>
                     </div>
-                    {result.freightClass === "175+" && (
-                      <div className="p-3 rounded-md bg-amber-500/10 border border-amber-500/30" data-testid="low-density-notice">
-                        <p className="text-xs md:text-sm text-amber-600 dark:text-amber-400">
-                          Density below 4 PCF falls outside the standard 13-tier density scale. Contact your carrier for classification based on commodity type, handling, and liability factors.
-                        </p>
-                      </div>
-                    )}
                   </div>
                 ) : (
                   <div className="text-center py-6 md:py-8" data-testid="results-empty-state">
@@ -953,10 +946,10 @@ export default function Home() {
                   <table className="w-full min-w-[280px]" data-testid="table-reference">
                     <thead>
                       <tr className="border-b border-border">
-                        <th className="text-left py-3 px-3 text-xs md:text-sm font-semibold text-muted-foreground uppercase tracking-wider">
+                        <th className="text-left py-3 px-3 text-sm md:text-base font-semibold text-muted-foreground uppercase tracking-wider">
                           Density Range (PCF)
                         </th>
-                        <th className="text-right py-3 px-3 text-xs md:text-sm font-semibold text-muted-foreground uppercase tracking-wider">
+                        <th className="text-right py-3 px-3 text-sm md:text-base font-semibold text-muted-foreground uppercase tracking-wider">
                           Class
                         </th>
                       </tr>
@@ -972,10 +965,10 @@ export default function Home() {
                           }`}
                           data-testid={`row-class-${row.class}`}
                         >
-                          <td className="py-3 px-3 text-sm md:text-base font-mono">
+                          <td className="py-3 px-3 text-base md:text-lg font-mono">
                             {row.densityRange}
                           </td>
-                          <td className={`py-3 px-3 text-right text-sm md:text-base font-mono font-semibold ${
+                          <td className={`py-3 px-3 text-right text-base md:text-lg font-mono font-semibold ${
                             result.freightClass === row.class ? 'text-primary' : ''
                           }`}>
                             {row.class}

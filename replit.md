@@ -121,21 +121,19 @@ The calculator uses the NMFC 13-tier density-based classification system effecti
 
 | Density (PCF) | Class |
 |---------------|-------|
+| Less than 1 | 400 |
+| 1 to <2 | 300 |
+| 2 to <4 | 250 |
 | 4 to <6 | 175 |
-| 6 to <7 | 150 |
-| 7 to <8 | 125 |
-| 8 to <9 | 110 |
-| 9 to <10.5 | 100 |
-| 10.5 to <12 | 92.5 |
-| 12 to <13.5 | 85 |
-| 13.5 to <15 | 77.5 |
+| 6 to <8 | 125 |
+| 8 to <10 | 100 |
+| 10 to <12 | 92.5 |
+| 12 to <15 | 85 |
 | 15 to <22.5 | 70 |
 | 22.5 to <30 | 65 |
 | 30 to <35 | 60 |
 | 35 to <50 | 55 |
 | 50+ | 50 |
-
-**Note:** Items with density below 4 PCF fall outside the standard density-based scale and require carrier review for classification based on commodity type, handling, stowability, and liability factors.
 
 ### Key Features
 - **Quick Templates**: Pre-configured commodity templates (Electronics, Furniture, Machinery, Textiles)
