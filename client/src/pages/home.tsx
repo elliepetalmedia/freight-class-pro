@@ -5,7 +5,7 @@ import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Switch } from "@/components/ui/switch";
 import { Link } from "wouter";
-import { RotateCcw, Truck, Package, Calculator, Scale } from "lucide-react";
+import { RotateCcw, Truck, Package, Calculator, Scale, Plus, Minus } from "lucide-react";
 
 const STORAGE_KEY = "freightClassPro";
 
@@ -175,6 +175,17 @@ export default function Home() {
   const dimensionUnit = inputs.useMetric ? "cm" : "in";
   const weightUnit = inputs.useMetric ? "kg" : "lbs";
 
+  const increment = (field: "length" | "width" | "height" | "weight", step: number = 1) => {
+    const current = parseFloat(inputs[field]) || 0;
+    handleInputChange(field, (current + step).toString());
+  };
+
+  const decrement = (field: "length" | "width" | "height" | "weight", step: number = 1) => {
+    const current = parseFloat(inputs[field]) || 0;
+    const newValue = Math.max(0, current - step);
+    handleInputChange(field, newValue > 0 ? newValue.toString() : "");
+  };
+
   return (
     <div className="min-h-screen bg-background" data-testid="page-home">
       <header className="border-b border-border py-4 md:py-6" data-testid="header-main">
@@ -188,6 +199,9 @@ export default function Home() {
             </div>
             <p className="text-muted-foreground text-sm md:text-base" data-testid="text-subtitle">
               LTL Density Calculator
+            </p>
+            <p className="text-xs md:text-sm text-muted-foreground/80 mt-2" data-testid="text-description">
+              Calculate freight class instantly, 100% client-side with no data uploads
             </p>
           </div>
         </div>
@@ -245,42 +259,108 @@ export default function Home() {
                   <div className="grid grid-cols-3 gap-3 md:gap-4">
                     <div className="space-y-2">
                       <Label htmlFor="length" className="text-xs md:text-sm">Length</Label>
-                      <Input
-                        id="length"
-                        type="number"
-                        inputMode="decimal"
-                        placeholder="0"
-                        value={inputs.length}
-                        onChange={(e) => handleInputChange("length", e.target.value)}
-                        className="h-12 md:h-14 text-lg md:text-xl font-mono text-center"
-                        data-testid="input-length"
-                      />
+                      <div className="flex items-center gap-2">
+                        <Button
+                          type="button"
+                          size="icon"
+                          variant="outline"
+                          onClick={() => decrement("length", 1)}
+                          className="h-10 w-10"
+                          data-testid="button-length-minus"
+                        >
+                          <Minus className="h-4 w-4" />
+                        </Button>
+                        <Input
+                          id="length"
+                          type="number"
+                          inputMode="decimal"
+                          placeholder="0"
+                          value={inputs.length}
+                          onChange={(e) => handleInputChange("length", e.target.value)}
+                          className="h-10 text-lg font-mono text-center flex-1"
+                          data-testid="input-length"
+                        />
+                        <Button
+                          type="button"
+                          size="icon"
+                          variant="outline"
+                          onClick={() => increment("length", 1)}
+                          className="h-10 w-10"
+                          data-testid="button-length-plus"
+                        >
+                          <Plus className="h-4 w-4" />
+                        </Button>
+                      </div>
                     </div>
                     <div className="space-y-2">
                       <Label htmlFor="width" className="text-xs md:text-sm">Width</Label>
-                      <Input
-                        id="width"
-                        type="number"
-                        inputMode="decimal"
-                        placeholder="0"
-                        value={inputs.width}
-                        onChange={(e) => handleInputChange("width", e.target.value)}
-                        className="h-12 md:h-14 text-lg md:text-xl font-mono text-center"
-                        data-testid="input-width"
-                      />
+                      <div className="flex items-center gap-2">
+                        <Button
+                          type="button"
+                          size="icon"
+                          variant="outline"
+                          onClick={() => decrement("width", 1)}
+                          className="h-10 w-10"
+                          data-testid="button-width-minus"
+                        >
+                          <Minus className="h-4 w-4" />
+                        </Button>
+                        <Input
+                          id="width"
+                          type="number"
+                          inputMode="decimal"
+                          placeholder="0"
+                          value={inputs.width}
+                          onChange={(e) => handleInputChange("width", e.target.value)}
+                          className="h-10 text-lg font-mono text-center flex-1"
+                          data-testid="input-width"
+                        />
+                        <Button
+                          type="button"
+                          size="icon"
+                          variant="outline"
+                          onClick={() => increment("width", 1)}
+                          className="h-10 w-10"
+                          data-testid="button-width-plus"
+                        >
+                          <Plus className="h-4 w-4" />
+                        </Button>
+                      </div>
                     </div>
                     <div className="space-y-2">
                       <Label htmlFor="height" className="text-xs md:text-sm">Height</Label>
-                      <Input
-                        id="height"
-                        type="number"
-                        inputMode="decimal"
-                        placeholder="0"
-                        value={inputs.height}
-                        onChange={(e) => handleInputChange("height", e.target.value)}
-                        className="h-12 md:h-14 text-lg md:text-xl font-mono text-center"
-                        data-testid="input-height"
-                      />
+                      <div className="flex items-center gap-2">
+                        <Button
+                          type="button"
+                          size="icon"
+                          variant="outline"
+                          onClick={() => decrement("height", 1)}
+                          className="h-10 w-10"
+                          data-testid="button-height-minus"
+                        >
+                          <Minus className="h-4 w-4" />
+                        </Button>
+                        <Input
+                          id="height"
+                          type="number"
+                          inputMode="decimal"
+                          placeholder="0"
+                          value={inputs.height}
+                          onChange={(e) => handleInputChange("height", e.target.value)}
+                          className="h-10 text-lg font-mono text-center flex-1"
+                          data-testid="input-height"
+                        />
+                        <Button
+                          type="button"
+                          size="icon"
+                          variant="outline"
+                          onClick={() => increment("height", 1)}
+                          className="h-10 w-10"
+                          data-testid="button-height-plus"
+                        >
+                          <Plus className="h-4 w-4" />
+                        </Button>
+                      </div>
                     </div>
                   </div>
                 </div>
@@ -290,16 +370,38 @@ export default function Home() {
                     <Scale className="h-4 w-4" />
                     Weight ({weightUnit})
                   </div>
-                  <Input
-                    id="weight"
-                    type="number"
-                    inputMode="decimal"
-                    placeholder="0"
-                    value={inputs.weight}
-                    onChange={(e) => handleInputChange("weight", e.target.value)}
-                    className="h-12 md:h-14 text-lg md:text-xl font-mono text-center"
-                    data-testid="input-weight"
-                  />
+                  <div className="flex items-center gap-2">
+                    <Button
+                      type="button"
+                      size="icon"
+                      variant="outline"
+                      onClick={() => decrement("weight", 1)}
+                      className="h-10 w-10"
+                      data-testid="button-weight-minus"
+                    >
+                      <Minus className="h-4 w-4" />
+                    </Button>
+                    <Input
+                      id="weight"
+                      type="number"
+                      inputMode="decimal"
+                      placeholder="0"
+                      value={inputs.weight}
+                      onChange={(e) => handleInputChange("weight", e.target.value)}
+                      className="h-10 text-lg font-mono text-center flex-1"
+                      data-testid="input-weight"
+                    />
+                    <Button
+                      type="button"
+                      size="icon"
+                      variant="outline"
+                      onClick={() => increment("weight", 1)}
+                      className="h-10 w-10"
+                      data-testid="button-weight-plus"
+                    >
+                      <Plus className="h-4 w-4" />
+                    </Button>
+                  </div>
                 </div>
 
                 <Button
