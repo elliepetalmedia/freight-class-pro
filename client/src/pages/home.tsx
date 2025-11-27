@@ -467,9 +467,9 @@ export default function Home() {
                     <Package className="h-4 w-4" />
                     Dimensions ({dimensionUnit})
                   </div>
-                  <div className="grid grid-cols-3 gap-3 md:gap-4">
+                  <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
                     <div className="space-y-2">
-                      <Label htmlFor="length" className="text-xs md:text-sm">Length</Label>
+                      <Label htmlFor="length" className="text-sm md:text-sm font-medium">Length ({dimensionUnit})</Label>
                       <div className="flex items-center gap-2">
                         <Button
                           type="button"
@@ -477,21 +477,24 @@ export default function Home() {
                           variant="outline"
                           onClick={() => decrement("length", 1)}
                           onTouchEnd={(e) => { e.preventDefault(); decrement("length", 1); }}
-                          className="h-10 w-10 touch-manipulation"
+                          className="h-12 w-12 md:h-10 md:w-10 touch-manipulation"
                           data-testid="button-length-minus"
                         >
-                          <Minus className="h-4 w-4" />
+                          <Minus className="h-5 w-5 md:h-4 md:w-4" />
                         </Button>
-                        <Input
+                        <input
                           id="length"
                           type="text"
                           inputMode="decimal"
                           pattern="[0-9.]*"
+                          autoComplete="off"
+                          autoCorrect="off"
+                          autoCapitalize="off"
+                          spellCheck={false}
                           placeholder="0"
                           value={inputs.length}
                           onChange={(e) => handleInputChange("length", e.target.value)}
-                          onInput={(e) => handleInputChange("length", (e.target as HTMLInputElement).value)}
-                          className="h-14 md:h-10 font-mono text-center flex-1 text-foreground"
+                          className="h-14 md:h-10 flex-1 rounded-md border border-input bg-background px-3 py-2 font-mono text-center text-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2"
                           style={{ fontSize: "1.5rem" }}
                           data-testid="input-length"
                         />
@@ -501,15 +504,15 @@ export default function Home() {
                           variant="outline"
                           onClick={() => increment("length", 1)}
                           onTouchEnd={(e) => { e.preventDefault(); increment("length", 1); }}
-                          className="h-10 w-10 touch-manipulation"
+                          className="h-12 w-12 md:h-10 md:w-10 touch-manipulation"
                           data-testid="button-length-plus"
                         >
-                          <Plus className="h-4 w-4" />
+                          <Plus className="h-5 w-5 md:h-4 md:w-4" />
                         </Button>
                       </div>
                     </div>
                     <div className="space-y-2">
-                      <Label htmlFor="width" className="text-xs md:text-sm">Width</Label>
+                      <Label htmlFor="width" className="text-sm md:text-sm font-medium">Width ({dimensionUnit})</Label>
                       <div className="flex items-center gap-2">
                         <Button
                           type="button"
@@ -517,21 +520,24 @@ export default function Home() {
                           variant="outline"
                           onClick={() => decrement("width", 1)}
                           onTouchEnd={(e) => { e.preventDefault(); decrement("width", 1); }}
-                          className="h-10 w-10 touch-manipulation"
+                          className="h-12 w-12 md:h-10 md:w-10 touch-manipulation"
                           data-testid="button-width-minus"
                         >
-                          <Minus className="h-4 w-4" />
+                          <Minus className="h-5 w-5 md:h-4 md:w-4" />
                         </Button>
-                        <Input
+                        <input
                           id="width"
                           type="text"
                           inputMode="decimal"
                           pattern="[0-9.]*"
+                          autoComplete="off"
+                          autoCorrect="off"
+                          autoCapitalize="off"
+                          spellCheck={false}
                           placeholder="0"
                           value={inputs.width}
                           onChange={(e) => handleInputChange("width", e.target.value)}
-                          onInput={(e) => handleInputChange("width", (e.target as HTMLInputElement).value)}
-                          className="h-14 md:h-10 font-mono text-center flex-1 text-foreground"
+                          className="h-14 md:h-10 flex-1 rounded-md border border-input bg-background px-3 py-2 font-mono text-center text-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2"
                           style={{ fontSize: "1.5rem" }}
                           data-testid="input-width"
                         />
@@ -541,15 +547,15 @@ export default function Home() {
                           variant="outline"
                           onClick={() => increment("width", 1)}
                           onTouchEnd={(e) => { e.preventDefault(); increment("width", 1); }}
-                          className="h-10 w-10 touch-manipulation"
+                          className="h-12 w-12 md:h-10 md:w-10 touch-manipulation"
                           data-testid="button-width-plus"
                         >
-                          <Plus className="h-4 w-4" />
+                          <Plus className="h-5 w-5 md:h-4 md:w-4" />
                         </Button>
                       </div>
                     </div>
                     <div className="space-y-2">
-                      <Label htmlFor="height" className="text-xs md:text-sm">Height</Label>
+                      <Label htmlFor="height" className="text-sm md:text-sm font-medium">Height ({dimensionUnit})</Label>
                       <div className="flex items-center gap-2">
                         <Button
                           type="button"
@@ -557,21 +563,24 @@ export default function Home() {
                           variant="outline"
                           onClick={() => decrement("height", 1)}
                           onTouchEnd={(e) => { e.preventDefault(); decrement("height", 1); }}
-                          className="h-10 w-10 touch-manipulation"
+                          className="h-12 w-12 md:h-10 md:w-10 touch-manipulation"
                           data-testid="button-height-minus"
                         >
-                          <Minus className="h-4 w-4" />
+                          <Minus className="h-5 w-5 md:h-4 md:w-4" />
                         </Button>
-                        <Input
+                        <input
                           id="height"
                           type="text"
                           inputMode="decimal"
                           pattern="[0-9.]*"
+                          autoComplete="off"
+                          autoCorrect="off"
+                          autoCapitalize="off"
+                          spellCheck={false}
                           placeholder="0"
                           value={inputs.height}
                           onChange={(e) => handleInputChange("height", e.target.value)}
-                          onInput={(e) => handleInputChange("height", (e.target as HTMLInputElement).value)}
-                          className="h-14 md:h-10 font-mono text-center flex-1 text-foreground"
+                          className="h-14 md:h-10 flex-1 rounded-md border border-input bg-background px-3 py-2 font-mono text-center text-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2"
                           style={{ fontSize: "1.5rem" }}
                           data-testid="input-height"
                         />
@@ -581,10 +590,10 @@ export default function Home() {
                           variant="outline"
                           onClick={() => increment("height", 1)}
                           onTouchEnd={(e) => { e.preventDefault(); increment("height", 1); }}
-                          className="h-10 w-10 touch-manipulation"
+                          className="h-12 w-12 md:h-10 md:w-10 touch-manipulation"
                           data-testid="button-height-plus"
                         >
-                          <Plus className="h-4 w-4" />
+                          <Plus className="h-5 w-5 md:h-4 md:w-4" />
                         </Button>
                       </div>
                     </div>
@@ -592,10 +601,10 @@ export default function Home() {
                 </div>
 
                 <div className="space-y-2">
-                  <div className="flex items-center gap-2 text-sm font-medium text-muted-foreground">
+                  <Label htmlFor="weight" className="text-sm font-medium flex items-center gap-2">
                     <Scale className="h-4 w-4" />
                     Weight ({weightUnit})
-                  </div>
+                  </Label>
                   <div className="flex items-center gap-2">
                     <Button
                       type="button"
@@ -603,21 +612,24 @@ export default function Home() {
                       variant="outline"
                       onClick={() => decrement("weight", 1)}
                       onTouchEnd={(e) => { e.preventDefault(); decrement("weight", 1); }}
-                      className="h-10 w-10 touch-manipulation"
+                      className="h-12 w-12 md:h-10 md:w-10 touch-manipulation"
                       data-testid="button-weight-minus"
                     >
-                      <Minus className="h-4 w-4" />
+                      <Minus className="h-5 w-5 md:h-4 md:w-4" />
                     </Button>
-                    <Input
+                    <input
                       id="weight"
                       type="text"
                       inputMode="decimal"
                       pattern="[0-9.]*"
+                      autoComplete="off"
+                      autoCorrect="off"
+                      autoCapitalize="off"
+                      spellCheck={false}
                       placeholder="0"
                       value={inputs.weight}
                       onChange={(e) => handleInputChange("weight", e.target.value)}
-                      onInput={(e) => handleInputChange("weight", (e.target as HTMLInputElement).value)}
-                      className="h-14 md:h-10 font-mono text-center flex-1 text-foreground"
+                      className="h-14 md:h-10 flex-1 rounded-md border border-input bg-background px-3 py-2 font-mono text-center text-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2"
                       style={{ fontSize: "1.5rem" }}
                       data-testid="input-weight"
                     />
@@ -627,10 +639,10 @@ export default function Home() {
                       variant="outline"
                       onClick={() => increment("weight", 1)}
                       onTouchEnd={(e) => { e.preventDefault(); increment("weight", 1); }}
-                      className="h-10 w-10 touch-manipulation"
+                      className="h-12 w-12 md:h-10 md:w-10 touch-manipulation"
                       data-testid="button-weight-plus"
                     >
-                      <Plus className="h-4 w-4" />
+                      <Plus className="h-5 w-5 md:h-4 md:w-4" />
                     </Button>
                   </div>
                 </div>
