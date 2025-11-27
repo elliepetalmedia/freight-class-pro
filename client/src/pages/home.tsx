@@ -470,17 +470,16 @@ export default function Home() {
                   <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
                     <div className="space-y-2">
                       <Label htmlFor="length" className="text-sm md:text-sm font-medium">Length ({dimensionUnit})</Label>
-                      <div className="flex items-center gap-2">
+                      <div className="flex items-center gap-3">
                         <Button
                           type="button"
-                          size="icon"
                           variant="outline"
                           onClick={() => decrement("length", 1)}
                           onTouchEnd={(e) => { e.preventDefault(); decrement("length", 1); }}
-                          className="h-12 w-12 md:h-10 md:w-10 touch-manipulation"
+                          className="h-14 w-14 md:h-10 md:w-10 touch-manipulation flex-shrink-0"
                           data-testid="button-length-minus"
                         >
-                          <Minus className="h-5 w-5 md:h-4 md:w-4" />
+                          <Minus className="h-6 w-6 md:h-4 md:w-4" />
                         </Button>
                         <input
                           id="length"
@@ -494,36 +493,34 @@ export default function Home() {
                           placeholder="0"
                           value={inputs.length}
                           onChange={(e) => handleInputChange("length", e.target.value)}
-                          className="h-14 md:h-10 flex-1 rounded-md border border-input bg-background px-3 py-2 font-mono text-center text-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2"
-                          style={{ fontSize: "1.5rem" }}
+                          className="h-14 md:h-10 w-20 md:flex-1 rounded-md border border-input bg-background px-2 py-2 font-mono text-center text-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2"
+                          style={{ fontSize: "1.25rem" }}
                           data-testid="input-length"
                         />
                         <Button
                           type="button"
-                          size="icon"
                           variant="outline"
                           onClick={() => increment("length", 1)}
                           onTouchEnd={(e) => { e.preventDefault(); increment("length", 1); }}
-                          className="h-12 w-12 md:h-10 md:w-10 touch-manipulation"
+                          className="h-14 w-14 md:h-10 md:w-10 touch-manipulation flex-shrink-0"
                           data-testid="button-length-plus"
                         >
-                          <Plus className="h-5 w-5 md:h-4 md:w-4" />
+                          <Plus className="h-6 w-6 md:h-4 md:w-4" />
                         </Button>
                       </div>
                     </div>
                     <div className="space-y-2">
                       <Label htmlFor="width" className="text-sm md:text-sm font-medium">Width ({dimensionUnit})</Label>
-                      <div className="flex items-center gap-2">
+                      <div className="flex items-center gap-3">
                         <Button
                           type="button"
-                          size="icon"
                           variant="outline"
                           onClick={() => decrement("width", 1)}
                           onTouchEnd={(e) => { e.preventDefault(); decrement("width", 1); }}
-                          className="h-12 w-12 md:h-10 md:w-10 touch-manipulation"
+                          className="h-14 w-14 md:h-10 md:w-10 touch-manipulation flex-shrink-0"
                           data-testid="button-width-minus"
                         >
-                          <Minus className="h-5 w-5 md:h-4 md:w-4" />
+                          <Minus className="h-6 w-6 md:h-4 md:w-4" />
                         </Button>
                         <input
                           id="width"
@@ -537,36 +534,34 @@ export default function Home() {
                           placeholder="0"
                           value={inputs.width}
                           onChange={(e) => handleInputChange("width", e.target.value)}
-                          className="h-14 md:h-10 flex-1 rounded-md border border-input bg-background px-3 py-2 font-mono text-center text-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2"
-                          style={{ fontSize: "1.5rem" }}
+                          className="h-14 md:h-10 w-20 md:flex-1 rounded-md border border-input bg-background px-2 py-2 font-mono text-center text-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2"
+                          style={{ fontSize: "1.25rem" }}
                           data-testid="input-width"
                         />
                         <Button
                           type="button"
-                          size="icon"
                           variant="outline"
                           onClick={() => increment("width", 1)}
                           onTouchEnd={(e) => { e.preventDefault(); increment("width", 1); }}
-                          className="h-12 w-12 md:h-10 md:w-10 touch-manipulation"
+                          className="h-14 w-14 md:h-10 md:w-10 touch-manipulation flex-shrink-0"
                           data-testid="button-width-plus"
                         >
-                          <Plus className="h-5 w-5 md:h-4 md:w-4" />
+                          <Plus className="h-6 w-6 md:h-4 md:w-4" />
                         </Button>
                       </div>
                     </div>
                     <div className="space-y-2">
                       <Label htmlFor="height" className="text-sm md:text-sm font-medium">Height ({dimensionUnit})</Label>
-                      <div className="flex items-center gap-2">
+                      <div className="flex items-center gap-3">
                         <Button
                           type="button"
-                          size="icon"
                           variant="outline"
                           onClick={() => decrement("height", 1)}
                           onTouchEnd={(e) => { e.preventDefault(); decrement("height", 1); }}
-                          className="h-12 w-12 md:h-10 md:w-10 touch-manipulation"
+                          className="h-14 w-14 md:h-10 md:w-10 touch-manipulation flex-shrink-0"
                           data-testid="button-height-minus"
                         >
-                          <Minus className="h-5 w-5 md:h-4 md:w-4" />
+                          <Minus className="h-6 w-6 md:h-4 md:w-4" />
                         </Button>
                         <input
                           id="height"
@@ -580,20 +575,19 @@ export default function Home() {
                           placeholder="0"
                           value={inputs.height}
                           onChange={(e) => handleInputChange("height", e.target.value)}
-                          className="h-14 md:h-10 flex-1 rounded-md border border-input bg-background px-3 py-2 font-mono text-center text-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2"
-                          style={{ fontSize: "1.5rem" }}
+                          className="h-14 md:h-10 w-20 md:flex-1 rounded-md border border-input bg-background px-2 py-2 font-mono text-center text-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2"
+                          style={{ fontSize: "1.25rem" }}
                           data-testid="input-height"
                         />
                         <Button
                           type="button"
-                          size="icon"
                           variant="outline"
                           onClick={() => increment("height", 1)}
                           onTouchEnd={(e) => { e.preventDefault(); increment("height", 1); }}
-                          className="h-12 w-12 md:h-10 md:w-10 touch-manipulation"
+                          className="h-14 w-14 md:h-10 md:w-10 touch-manipulation flex-shrink-0"
                           data-testid="button-height-plus"
                         >
-                          <Plus className="h-5 w-5 md:h-4 md:w-4" />
+                          <Plus className="h-6 w-6 md:h-4 md:w-4" />
                         </Button>
                       </div>
                     </div>
@@ -605,17 +599,16 @@ export default function Home() {
                     <Scale className="h-4 w-4" />
                     Weight ({weightUnit})
                   </Label>
-                  <div className="flex items-center gap-2">
+                  <div className="flex items-center gap-3">
                     <Button
                       type="button"
-                      size="icon"
                       variant="outline"
                       onClick={() => decrement("weight", 1)}
                       onTouchEnd={(e) => { e.preventDefault(); decrement("weight", 1); }}
-                      className="h-12 w-12 md:h-10 md:w-10 touch-manipulation"
+                      className="h-14 w-14 md:h-10 md:w-10 touch-manipulation flex-shrink-0"
                       data-testid="button-weight-minus"
                     >
-                      <Minus className="h-5 w-5 md:h-4 md:w-4" />
+                      <Minus className="h-6 w-6 md:h-4 md:w-4" />
                     </Button>
                     <input
                       id="weight"
@@ -629,20 +622,19 @@ export default function Home() {
                       placeholder="0"
                       value={inputs.weight}
                       onChange={(e) => handleInputChange("weight", e.target.value)}
-                      className="h-14 md:h-10 flex-1 rounded-md border border-input bg-background px-3 py-2 font-mono text-center text-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2"
-                      style={{ fontSize: "1.5rem" }}
+                      className="h-14 md:h-10 w-24 md:flex-1 rounded-md border border-input bg-background px-2 py-2 font-mono text-center text-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2"
+                      style={{ fontSize: "1.25rem" }}
                       data-testid="input-weight"
                     />
                     <Button
                       type="button"
-                      size="icon"
                       variant="outline"
                       onClick={() => increment("weight", 1)}
                       onTouchEnd={(e) => { e.preventDefault(); increment("weight", 1); }}
-                      className="h-12 w-12 md:h-10 md:w-10 touch-manipulation"
+                      className="h-14 w-14 md:h-10 md:w-10 touch-manipulation flex-shrink-0"
                       data-testid="button-weight-plus"
                     >
-                      <Plus className="h-5 w-5 md:h-4 md:w-4" />
+                      <Plus className="h-6 w-6 md:h-4 md:w-4" />
                     </Button>
                   </div>
                 </div>
