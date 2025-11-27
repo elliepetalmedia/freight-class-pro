@@ -476,18 +476,21 @@ export default function Home() {
                           size="icon"
                           variant="outline"
                           onClick={() => decrement("length", 1)}
-                          className="h-10 w-10"
+                          onTouchEnd={(e) => { e.preventDefault(); decrement("length", 1); }}
+                          className="h-10 w-10 touch-manipulation"
                           data-testid="button-length-minus"
                         >
                           <Minus className="h-4 w-4" />
                         </Button>
                         <Input
                           id="length"
-                          type="number"
+                          type="text"
                           inputMode="decimal"
+                          pattern="[0-9.]*"
                           placeholder="0"
                           value={inputs.length}
                           onChange={(e) => handleInputChange("length", e.target.value)}
+                          onInput={(e) => handleInputChange("length", (e.target as HTMLInputElement).value)}
                           className="h-14 md:h-10 font-mono text-center flex-1 text-foreground"
                           style={{ fontSize: "1.5rem" }}
                           data-testid="input-length"
@@ -497,7 +500,8 @@ export default function Home() {
                           size="icon"
                           variant="outline"
                           onClick={() => increment("length", 1)}
-                          className="h-10 w-10"
+                          onTouchEnd={(e) => { e.preventDefault(); increment("length", 1); }}
+                          className="h-10 w-10 touch-manipulation"
                           data-testid="button-length-plus"
                         >
                           <Plus className="h-4 w-4" />
@@ -512,18 +516,21 @@ export default function Home() {
                           size="icon"
                           variant="outline"
                           onClick={() => decrement("width", 1)}
-                          className="h-10 w-10"
+                          onTouchEnd={(e) => { e.preventDefault(); decrement("width", 1); }}
+                          className="h-10 w-10 touch-manipulation"
                           data-testid="button-width-minus"
                         >
                           <Minus className="h-4 w-4" />
                         </Button>
                         <Input
                           id="width"
-                          type="number"
+                          type="text"
                           inputMode="decimal"
+                          pattern="[0-9.]*"
                           placeholder="0"
                           value={inputs.width}
                           onChange={(e) => handleInputChange("width", e.target.value)}
+                          onInput={(e) => handleInputChange("width", (e.target as HTMLInputElement).value)}
                           className="h-14 md:h-10 font-mono text-center flex-1 text-foreground"
                           style={{ fontSize: "1.5rem" }}
                           data-testid="input-width"
@@ -533,7 +540,8 @@ export default function Home() {
                           size="icon"
                           variant="outline"
                           onClick={() => increment("width", 1)}
-                          className="h-10 w-10"
+                          onTouchEnd={(e) => { e.preventDefault(); increment("width", 1); }}
+                          className="h-10 w-10 touch-manipulation"
                           data-testid="button-width-plus"
                         >
                           <Plus className="h-4 w-4" />
@@ -548,18 +556,21 @@ export default function Home() {
                           size="icon"
                           variant="outline"
                           onClick={() => decrement("height", 1)}
-                          className="h-10 w-10"
+                          onTouchEnd={(e) => { e.preventDefault(); decrement("height", 1); }}
+                          className="h-10 w-10 touch-manipulation"
                           data-testid="button-height-minus"
                         >
                           <Minus className="h-4 w-4" />
                         </Button>
                         <Input
                           id="height"
-                          type="number"
+                          type="text"
                           inputMode="decimal"
+                          pattern="[0-9.]*"
                           placeholder="0"
                           value={inputs.height}
                           onChange={(e) => handleInputChange("height", e.target.value)}
+                          onInput={(e) => handleInputChange("height", (e.target as HTMLInputElement).value)}
                           className="h-14 md:h-10 font-mono text-center flex-1 text-foreground"
                           style={{ fontSize: "1.5rem" }}
                           data-testid="input-height"
@@ -569,7 +580,8 @@ export default function Home() {
                           size="icon"
                           variant="outline"
                           onClick={() => increment("height", 1)}
-                          className="h-10 w-10"
+                          onTouchEnd={(e) => { e.preventDefault(); increment("height", 1); }}
+                          className="h-10 w-10 touch-manipulation"
                           data-testid="button-height-plus"
                         >
                           <Plus className="h-4 w-4" />
@@ -590,18 +602,21 @@ export default function Home() {
                       size="icon"
                       variant="outline"
                       onClick={() => decrement("weight", 1)}
-                      className="h-10 w-10"
+                      onTouchEnd={(e) => { e.preventDefault(); decrement("weight", 1); }}
+                      className="h-10 w-10 touch-manipulation"
                       data-testid="button-weight-minus"
                     >
                       <Minus className="h-4 w-4" />
                     </Button>
                     <Input
                       id="weight"
-                      type="number"
+                      type="text"
                       inputMode="decimal"
+                      pattern="[0-9.]*"
                       placeholder="0"
                       value={inputs.weight}
                       onChange={(e) => handleInputChange("weight", e.target.value)}
+                      onInput={(e) => handleInputChange("weight", (e.target as HTMLInputElement).value)}
                       className="h-14 md:h-10 font-mono text-center flex-1 text-foreground"
                       style={{ fontSize: "1.5rem" }}
                       data-testid="input-weight"
@@ -611,7 +626,8 @@ export default function Home() {
                       size="icon"
                       variant="outline"
                       onClick={() => increment("weight", 1)}
-                      className="h-10 w-10"
+                      onTouchEnd={(e) => { e.preventDefault(); increment("weight", 1); }}
+                      className="h-10 w-10 touch-manipulation"
                       data-testid="button-weight-plus"
                     >
                       <Plus className="h-4 w-4" />
