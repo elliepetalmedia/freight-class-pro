@@ -488,7 +488,7 @@ export default function Home() {
                           placeholder="0"
                           value={inputs.length}
                           onChange={(e) => handleInputChange("length", e.target.value)}
-                          className="h-10 font-mono text-center flex-1"
+                          className="h-14 md:h-10 font-mono text-center flex-1 text-foreground"
                           style={{ fontSize: "1.5rem" }}
                           data-testid="input-length"
                         />
@@ -524,7 +524,7 @@ export default function Home() {
                           placeholder="0"
                           value={inputs.width}
                           onChange={(e) => handleInputChange("width", e.target.value)}
-                          className="h-10 font-mono text-center flex-1"
+                          className="h-14 md:h-10 font-mono text-center flex-1 text-foreground"
                           style={{ fontSize: "1.5rem" }}
                           data-testid="input-width"
                         />
@@ -560,7 +560,7 @@ export default function Home() {
                           placeholder="0"
                           value={inputs.height}
                           onChange={(e) => handleInputChange("height", e.target.value)}
-                          className="h-10 font-mono text-center flex-1"
+                          className="h-14 md:h-10 font-mono text-center flex-1 text-foreground"
                           style={{ fontSize: "1.5rem" }}
                           data-testid="input-height"
                         />
@@ -602,7 +602,7 @@ export default function Home() {
                       placeholder="0"
                       value={inputs.weight}
                       onChange={(e) => handleInputChange("weight", e.target.value)}
-                      className="h-10 font-mono text-center flex-1"
+                      className="h-14 md:h-10 font-mono text-center flex-1 text-foreground"
                       style={{ fontSize: "1.5rem" }}
                       data-testid="input-weight"
                     />
