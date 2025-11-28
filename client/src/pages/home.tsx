@@ -676,8 +676,8 @@ export default function Home() {
                     Reset All Values
                   </Button>
 
-                  <div className="flex gap-3">
-                    <div className="relative flex-1">
+                  <div className="flex flex-col md:flex-row gap-3">
+                    <div className="relative md:flex-1">
                       <Button
                         type="button"
                         variant="outline"
@@ -713,7 +713,7 @@ export default function Home() {
                       placeholder="Prepared By (optional)"
                       value={preparedBy}
                       onChange={(e) => setPreparedBy(e.target.value)}
-                      className="flex-1 h-10 rounded-md border border-input bg-background px-3 py-2 text-sm focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2"
+                      className="w-full md:flex-1 h-10 rounded-md border border-input bg-background px-3 py-2 text-sm focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2"
                       data-testid="input-prepared-by"
                     />
                   </div>
