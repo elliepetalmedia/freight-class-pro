@@ -5,7 +5,7 @@ import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Switch } from "@/components/ui/switch";
 import { Link } from "wouter";
-import { RotateCcw, Truck, Package, Calculator, Scale, Plus, Minus, Download, ChevronDown, Save, Trash2, FileText, X } from "lucide-react";
+import { RotateCcw, Truck, Package, Calculator, Scale, Plus, Minus, Download, ChevronDown, Save, Trash2, FileText, X, HelpCircle } from "lucide-react";
 import { jsPDF } from "jspdf";
 
 const STORAGE_KEY = "freightClassPro";
@@ -439,10 +439,20 @@ export default function Home() {
           <div className="space-y-6">
             <Card className="border-border" data-testid="card-calculator">
               <CardHeader className="pb-4">
-                <CardTitle className="flex items-center gap-2 text-lg md:text-xl" data-testid="title-calculator">
-                  <Calculator className="h-5 w-5 text-primary" />
-                  Calculate Freight Class
-                </CardTitle>
+                <div className="flex items-center justify-between gap-2">
+                  <CardTitle className="flex items-center gap-2 text-lg md:text-xl" data-testid="title-calculator">
+                    <Calculator className="h-5 w-5 text-primary" />
+                    Calculate Freight Class
+                  </CardTitle>
+                  <Link
+                    href="/faq"
+                    className="text-sm text-primary hover:text-primary/80 transition-colors flex items-center gap-1"
+                    data-testid="link-faq"
+                  >
+                    <HelpCircle className="h-4 w-4" />
+                    FAQ
+                  </Link>
+                </div>
               </CardHeader>
               <CardContent className="space-y-6">
                 <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 p-4 rounded-md bg-secondary/30 border border-border">
