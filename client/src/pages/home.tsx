@@ -125,12 +125,14 @@ export default function Home() {
   });
   const [showTemplates, setShowTemplates] = useState(false);
   const [pdfFileName, setPdfFileName] = useState("");
+  const [preparedBy, setPreparedBy] = useState("");
   const [showPdfDialog, setShowPdfDialog] = useState(false);
   const [savedLoads, setSavedLoads] = useState<SavedLoad[]>([]);
   const [loadName, setLoadName] = useState("");
   const [showSaveDialog, setShowSaveDialog] = useState(false);
   const [showMultiPdfDialog, setShowMultiPdfDialog] = useState(false);
   const [multiPdfFileName, setMultiPdfFileName] = useState("");
+  const [multiPreparedBy, setMultiPreparedBy] = useState("");
 
   const calculateDensity = useCallback(() => {
     const length = parseFloat(inputs.length);
@@ -240,9 +242,16 @@ export default function Home() {
     yPos += 12;
 
     doc.setFontSize(10);
-    const date = new Date().toLocaleDateString();
-    doc.text(`Generated: ${date}`, 20, yPos);
-    yPos += 12;
+    const now = new Date();
+    const date = now.toLocaleDateString();
+    const time = now.toLocaleTimeString();
+    doc.text(`Generated: ${date} at ${time}`, 20, yPos);
+    if (preparedBy.trim()) {
+      doc.text(`Prepared By: ${preparedBy.trim()}`, 20, yPos + 6);
+      yPos += 18;
+    } else {
+      yPos += 12;
+    }
 
     doc.setDrawColor(200);
     doc.line(20, yPos, pageWidth - 20, yPos);
@@ -293,6 +302,7 @@ export default function Home() {
 
     setShowPdfDialog(false);
     setPdfFileName("");
+    setPreparedBy("");
   };
 
   const saveCurrentLoad = () => {
@@ -338,9 +348,16 @@ export default function Home() {
     yPos += 10;
 
     doc.setFontSize(10);
-    const date = new Date().toLocaleDateString();
-    doc.text(`Generated: ${date} | Total Loads: ${savedLoads.length}`, margin, yPos);
-    yPos += 10;
+    const now = new Date();
+    const date = now.toLocaleDateString();
+    const time = now.toLocaleTimeString();
+    doc.text(`Generated: ${date} at ${time} | Total Loads: ${savedLoads.length}`, margin, yPos);
+    if (multiPreparedBy.trim()) {
+      doc.text(`Prepared By: ${multiPreparedBy.trim()}`, margin, yPos + 6);
+      yPos += 16;
+    } else {
+      yPos += 10;
+    }
 
     doc.setDrawColor(200);
     doc.line(margin, yPos, pageWidth - margin, yPos);
@@ -395,6 +412,7 @@ export default function Home() {
 
     setShowMultiPdfDialog(false);
     setMultiPdfFileName("");
+    setMultiPreparedBy("");
   };
 
   return (
@@ -650,35 +668,46 @@ export default function Home() {
                     Reset All Values
                   </Button>
 
-                  <div className="relative">
-                    <Button
-                      type="button"
-                      variant="outline"
-                      onClick={() => setShowTemplates(!showTemplates)}
-                      className="w-full h-12"
-                      data-testid="button-templates"
-                    >
-                      <Package className="h-4 w-4 mr-2" />
-                      Quick Templates
-                      <ChevronDown className="h-4 w-4 ml-auto" />
-                    </Button>
+                  <div className="flex gap-3">
+                    <div className="relative flex-1">
+                      <Button
+                        type="button"
+                        variant="outline"
+                        onClick={() => setShowTemplates(!showTemplates)}
+                        size="sm"
+                        className="w-full"
+                        data-testid="button-templates"
+                      >
+                        <Package className="h-3 w-3 mr-1" />
+                        Templates
+                        <ChevronDown className="h-3 w-3 ml-auto" />
+                      </Button>
 
-                    {showTemplates && (
-                      <div className="absolute top-14 left-0 right-0 bg-card border border-border rounded-md shadow-lg z-10 p-2 space-y-2" data-testid="templates-menu">
-                        {TEMPLATES.map((template) => (
-                          <Button
-                            key={template.name}
-                            type="button"
-                            variant="ghost"
-                            onClick={() => applyTemplate(template)}
-                            className="w-full justify-start text-sm"
-                            data-testid={`template-${template.name}`}
-                          >
-                            {template.name}
-                          </Button>
-                        ))}
-                      </div>
-                    )}
+                      {showTemplates && (
+                        <div className="absolute top-10 left-0 right-0 bg-card border border-border rounded-md shadow-lg z-10 p-2 space-y-2" data-testid="templates-menu">
+                          {TEMPLATES.map((template) => (
+                            <Button
+                              key={template.name}
+                              type="button"
+                              variant="ghost"
+                              onClick={() => applyTemplate(template)}
+                              className="w-full justify-start text-sm"
+                              data-testid={`template-${template.name}`}
+                            >
+                              {template.name}
+                            </Button>
+                          ))}
+                        </div>
+                      )}
+                    </div>
+                    <input
+                      type="text"
+                      placeholder="Prepared By (optional)"
+                      value={preparedBy}
+                      onChange={(e) => setPreparedBy(e.target.value)}
+                      className="flex-1 h-10 rounded-md border border-input bg-background px-3 py-2 text-sm focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2"
+                      data-testid="input-prepared-by"
+                    />
                   </div>
 
                   {result.density !== null && (
@@ -724,6 +753,18 @@ export default function Home() {
                             onChange={(e) => setPdfFileName(e.target.value)}
                             className="h-10"
                             data-testid="input-pdf-name"
+                          />
+                        </div>
+                        <div className="space-y-2">
+                          <Label htmlFor="pdf-prepared-by" className="text-sm">Prepared By <span className="text-muted-foreground">(optional)</span></Label>
+                          <Input
+                            id="pdf-prepared-by"
+                            type="text"
+                            placeholder="Your name or company"
+                            value={preparedBy}
+                            onChange={(e) => setPreparedBy(e.target.value)}
+                            className="h-10"
+                            data-testid="input-pdf-prepared-by"
                           />
                         </div>
                         <div className="flex gap-2 justify-end">
@@ -814,6 +855,18 @@ export default function Home() {
                             onChange={(e) => setMultiPdfFileName(e.target.value)}
                             className="h-10"
                             data-testid="input-multi-pdf-name"
+                          />
+                        </div>
+                        <div className="space-y-2">
+                          <Label htmlFor="multi-pdf-prepared-by" className="text-sm">Prepared By <span className="text-muted-foreground">(optional)</span></Label>
+                          <Input
+                            id="multi-pdf-prepared-by"
+                            type="text"
+                            placeholder="Your name or company"
+                            value={multiPreparedBy}
+                            onChange={(e) => setMultiPreparedBy(e.target.value)}
+                            className="h-10"
+                            data-testid="input-multi-pdf-prepared-by"
                           />
                         </div>
                         <div className="flex gap-2 justify-end">
