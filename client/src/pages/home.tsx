@@ -132,7 +132,6 @@ export default function Home() {
   const [showSaveDialog, setShowSaveDialog] = useState(false);
   const [showMultiPdfDialog, setShowMultiPdfDialog] = useState(false);
   const [multiPdfFileName, setMultiPdfFileName] = useState("");
-  const [multiPreparedBy, setMultiPreparedBy] = useState("");
 
   const calculateDensity = useCallback(() => {
     const length = parseFloat(inputs.length);
@@ -352,8 +351,8 @@ export default function Home() {
     const date = now.toLocaleDateString();
     const time = now.toLocaleTimeString();
     doc.text(`Generated: ${date} at ${time} | Total Loads: ${savedLoads.length}`, margin, yPos);
-    if (multiPreparedBy.trim()) {
-      doc.text(`Prepared By: ${multiPreparedBy.trim()}`, margin, yPos + 6);
+    if (preparedBy.trim()) {
+      doc.text(`Prepared By: ${preparedBy.trim()}`, margin, yPos + 6);
       yPos += 16;
     } else {
       yPos += 10;
@@ -412,7 +411,6 @@ export default function Home() {
 
     setShowMultiPdfDialog(false);
     setMultiPdfFileName("");
-    setMultiPreparedBy("");
   };
 
   return (
@@ -755,18 +753,6 @@ export default function Home() {
                             data-testid="input-pdf-name"
                           />
                         </div>
-                        <div className="space-y-2">
-                          <Label htmlFor="pdf-prepared-by" className="text-sm">Prepared By <span className="text-muted-foreground">(optional)</span></Label>
-                          <Input
-                            id="pdf-prepared-by"
-                            type="text"
-                            placeholder="Your name or company"
-                            value={preparedBy}
-                            onChange={(e) => setPreparedBy(e.target.value)}
-                            className="h-10"
-                            data-testid="input-pdf-prepared-by"
-                          />
-                        </div>
                         <div className="flex gap-2 justify-end">
                           <Button
                             type="button"
@@ -855,18 +841,6 @@ export default function Home() {
                             onChange={(e) => setMultiPdfFileName(e.target.value)}
                             className="h-10"
                             data-testid="input-multi-pdf-name"
-                          />
-                        </div>
-                        <div className="space-y-2">
-                          <Label htmlFor="multi-pdf-prepared-by" className="text-sm">Prepared By <span className="text-muted-foreground">(optional)</span></Label>
-                          <Input
-                            id="multi-pdf-prepared-by"
-                            type="text"
-                            placeholder="Your name or company"
-                            value={multiPreparedBy}
-                            onChange={(e) => setMultiPreparedBy(e.target.value)}
-                            className="h-10"
-                            data-testid="input-multi-pdf-prepared-by"
                           />
                         </div>
                         <div className="flex gap-2 justify-end">
