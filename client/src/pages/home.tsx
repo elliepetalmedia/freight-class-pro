@@ -771,6 +771,13 @@ export default function Home() {
                             placeholder="e.g., freight-calculation"
                             value={pdfFileName}
                             onChange={(e) => setPdfFileName(e.target.value)}
+                            onKeyDown={(e) => {
+                              if (e.key === "Enter") {
+                                e.preventDefault();
+                                downloadPDF();
+                              }
+                            }}
+                            autoFocus
                             className="h-10"
                             data-testid="input-pdf-name"
                           />
@@ -868,6 +875,13 @@ export default function Home() {
                             placeholder="e.g., multi-load-report"
                             value={multiPdfFileName}
                             onChange={(e) => setMultiPdfFileName(e.target.value)}
+                            onKeyDown={(e) => {
+                              if (e.key === "Enter") {
+                                e.preventDefault();
+                                downloadMultiLoadPDF();
+                              }
+                            }}
+                            autoFocus
                             className="h-10"
                             data-testid="input-multi-pdf-name"
                           />
