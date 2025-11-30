@@ -104,7 +104,13 @@ export default function FAQ() {
                 </div>
               </div>
 
-              <p className="text-sm"><strong>Tip:</strong> Fill in the "Prepared By" field next to Templates before downloading to include your name or company on the PDF.</p>
+              <div className="space-y-2 p-3 rounded-md bg-secondary/30 border border-border">
+                <p className="text-sm font-medium text-foreground">Pro Tips:</p>
+                <ul className="text-sm space-y-1 ml-2">
+                  <li>• The file name you enter will be displayed prominently in the PDF (in uppercase). Use this to reference purchase orders, internal tracking numbers, or shipment IDs.</li>
+                  <li>• Fill in the "Prepared By" field next to Templates to include your name or company on the PDF.</li>
+                </ul>
+              </div>
             </CardContent>
           </Card>
 
@@ -119,6 +125,7 @@ export default function FAQ() {
               <p>Each PDF report includes:</p>
               <ul className="list-disc list-inside space-y-2 ml-2">
                 <li><strong>Header</strong> - FreightClassPro branding and report title</li>
+                <li><strong>File Name</strong> - The name you entered (displayed in uppercase) for easy reference to your internal tracking</li>
                 <li><strong>Date & Time</strong> - When the report was generated</li>
                 <li><strong>Prepared By</strong> - Your name or company (if entered)</li>
                 <li><strong>Shipment Details</strong> - Length, Width, Height, Weight, and Palletized status</li>
