@@ -816,6 +816,13 @@ export default function Home() {
                             placeholder={`Load ${savedLoads.length + 1}`}
                             value={loadName}
                             onChange={(e) => setLoadName(e.target.value)}
+                            onKeyDown={(e) => {
+                              if (e.key === "Enter") {
+                                e.preventDefault();
+                                saveCurrentLoad();
+                              }
+                            }}
+                            autoFocus
                             className="h-10"
                             data-testid="input-load-name"
                           />
