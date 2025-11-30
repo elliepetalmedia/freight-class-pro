@@ -238,6 +238,14 @@ export default function Home() {
 
     doc.setFontSize(12);
     doc.text("Freight Classification Report", pageWidth / 2, yPos, { align: "center" });
+    yPos += 10;
+
+    const fileName = pdfFileName.trim() || "freight-calculation";
+    const sanitized = fileName.replace(/[^a-z0-9-]/gi, "-").toLowerCase();
+    doc.setFontSize(14);
+    doc.setFont("helvetica", "bold");
+    doc.text(sanitized, pageWidth / 2, yPos, { align: "center" });
+    doc.setFont("helvetica", "normal");
     yPos += 12;
 
     doc.setFontSize(10);
@@ -295,7 +303,6 @@ export default function Home() {
     doc.setTextColor(150);
     doc.text("Based on NMFC standards. For informational purposes only.", 20, docPageHeight - 15, { maxWidth: pageWidth - 40 });
 
-    const fileName = pdfFileName.trim() || "freight-calculation";
     const sanitized = fileName.replace(/[^a-z0-9-]/gi, "-").toLowerCase();
     doc.save(`${sanitized}.pdf`);
 
@@ -344,6 +351,14 @@ export default function Home() {
 
     doc.setFontSize(14);
     doc.text("Multi-Load Freight Report", pageWidth / 2, yPos, { align: "center" });
+    yPos += 10;
+
+    const multiFileName = multiPdfFileName.trim() || "multi-load-report";
+    const multiSanitized = multiFileName.replace(/[^a-z0-9-]/gi, "-").toLowerCase();
+    doc.setFontSize(14);
+    doc.setFont("helvetica", "bold");
+    doc.text(multiSanitized, pageWidth / 2, yPos, { align: "center" });
+    doc.setFont("helvetica", "normal");
     yPos += 10;
 
     doc.setFontSize(10);
@@ -405,9 +420,7 @@ export default function Home() {
     doc.setTextColor(150);
     doc.text("Based on NMFC standards. For informational purposes only.", margin, docPageHeight - 10, { maxWidth: pageWidth - margin * 2 });
 
-    const fileName = multiPdfFileName.trim() || "multi-load-report";
-    const sanitized = fileName.replace(/[^a-z0-9-]/gi, "-").toLowerCase();
-    doc.save(`${sanitized}.pdf`);
+    doc.save(`${multiSanitized}.pdf`);
 
     setShowMultiPdfDialog(false);
     setMultiPdfFileName("");
