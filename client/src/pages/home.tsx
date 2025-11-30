@@ -303,7 +303,6 @@ export default function Home() {
     doc.setTextColor(150);
     doc.text("Based on NMFC standards. For informational purposes only.", 20, docPageHeight - 15, { maxWidth: pageWidth - 40 });
 
-    const sanitized = fileName.replace(/[^a-z0-9-]/gi, "-").toLowerCase();
     doc.save(`${sanitized}.pdf`);
 
     setShowPdfDialog(false);
