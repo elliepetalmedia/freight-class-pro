@@ -241,7 +241,7 @@ export default function Home() {
     yPos += 10;
 
     const fileName = pdfFileName.trim() || "freight-calculation";
-    const sanitized = fileName.replace(/[^a-z0-9 -]/gi, "").toLowerCase();
+    const sanitized = fileName.replace(/[^a-z0-9 -]/gi, "").toUpperCase();
     doc.setFontSize(14);
     doc.setFont("helvetica", "bold");
     doc.text(sanitized, pageWidth / 2, yPos, { align: "center" });
@@ -353,7 +353,7 @@ export default function Home() {
     yPos += 10;
 
     const multiFileName = multiPdfFileName.trim() || "multi-load-report";
-    const multiSanitized = multiFileName.replace(/[^a-z0-9 -]/gi, "").toLowerCase();
+    const multiSanitized = multiFileName.replace(/[^a-z0-9 -]/gi, "").toUpperCase();
     doc.setFontSize(14);
     doc.setFont("helvetica", "bold");
     doc.text(multiSanitized, pageWidth / 2, yPos, { align: "center" });
