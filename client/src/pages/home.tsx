@@ -1148,48 +1148,7 @@ export default function Home() {
               </CardContent>
             </Card>
 
-            {historyEntries.length > 0 && (
-              <Card className="border-border mt-6" data-testid="card-history">
-                <CardHeader className="pb-3 cursor-pointer select-none" onClick={() => setShowHistory(!showHistory)}>
-                  <div className="flex items-center justify-between gap-2">
-                    <CardTitle className="flex items-center gap-2 text-lg" data-testid="title-history">
-                      <History className="h-5 w-5 text-muted-foreground" />
-                      Recent Calculations
-                    </CardTitle>
-                    <div className="flex gap-2">
-                      <ChevronDown className={`h-4 w-4 transition-transform ${showHistory ? 'rotate-180' : ''}`} />
-                    </div>
-                  </div>
-                </CardHeader>
-                {showHistory && (
-                  <CardContent className="space-y-2 max-h-[300px] overflow-y-auto">
-                    {historyEntries.map((entry) => (
-                      <div
-                        key={entry.id}
-                        className="flex items-center justify-between gap-3 p-2 rounded-md hover:bg-secondary/50 border border-transparent hover:border-border cursor-pointer transition-colors"
-                        onClick={() => {
-                          setInputs(entry.inputs);
-                          setResult(entry.result);
-                        }}
-                        data-testid={`history-entry-${entry.id}`}
-                      >
-                        <div className="flex-1 min-w-0">
-                          <p className="text-xs text-muted-foreground">
-                            {entry.inputs.length}×{entry.inputs.width}×{entry.inputs.height} {entry.inputs.useMetric ? 'cm' : 'in'} | {entry.inputs.weight} {entry.inputs.useMetric ? 'kg' : 'lbs'}
-                          </p>
-                        </div>
-                        <span className="font-mono text-xs font-semibold text-primary">
-                          Class {entry.result.freightClass}
-                        </span>
-                      </div>
-                    ))}
-                    <Button variant="ghost" size="sm" onClick={(e) => { e.stopPropagation(); clearHistory(); }} className="w-full text-xs text-muted-foreground mt-2">
-                      Clear History
-                    </Button>
-                  </CardContent>
-                )}
-              </Card>
-            )}
+
 
             <p className="text-xs text-muted-foreground text-center px-4 mt-6" data-testid="text-disclaimer">
               Data Source: Based on standard guidelines from the National Motor Freight Traffic Association (NMFTA) and Commodity Classification Standards Board (CCSB).
@@ -1238,6 +1197,49 @@ export default function Home() {
                 </div>
               </CardContent>
             </Card>
+            {historyEntries.length > 0 && (
+              <Card className="border-border mt-6" data-testid="card-history">
+                <CardHeader className="pb-3 cursor-pointer select-none" onClick={() => setShowHistory(!showHistory)}>
+                  <div className="flex items-center justify-between gap-2">
+                    <CardTitle className="flex items-center gap-2 text-lg" data-testid="title-history">
+                      <History className="h-5 w-5 text-muted-foreground" />
+                      Recent Calculations
+                    </CardTitle>
+                    <div className="flex gap-2">
+                      <ChevronDown className={`h-4 w-4 transition-transform ${showHistory ? 'rotate-180' : ''}`} />
+                    </div>
+                  </div>
+                </CardHeader>
+                {showHistory && (
+                  <CardContent className="space-y-2 max-h-[300px] overflow-y-auto">
+                    {historyEntries.map((entry) => (
+                      <div
+                        key={entry.id}
+                        className="flex items-center justify-between gap-3 p-2 rounded-md hover:bg-secondary/50 border border-transparent hover:border-border cursor-pointer transition-colors"
+                        onClick={() => {
+                          setInputs(entry.inputs);
+                          setResult(entry.result);
+                        }}
+                        data-testid={`history-entry-${entry.id}`}
+                      >
+                        <div className="flex-1 min-w-0">
+                          <p className="text-xs text-muted-foreground">
+                            {entry.inputs.length}×{entry.inputs.width}×{entry.inputs.height} {entry.inputs.useMetric ? 'cm' : 'in'} | {entry.inputs.weight} {entry.inputs.useMetric ? 'kg' : 'lbs'}
+                          </p>
+                        </div>
+                        <span className="font-mono text-xs font-semibold text-primary">
+                          Class {entry.result.freightClass}
+                        </span>
+                      </div>
+                    ))}
+                    <Button variant="ghost" size="sm" onClick={(e) => { e.stopPropagation(); clearHistory(); }} className="w-full text-xs text-muted-foreground mt-2">
+                      Clear History
+                    </Button>
+                  </CardContent>
+                )}
+              </Card>
+            )}
+
           </div>
         </div>
 

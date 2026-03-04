@@ -1,13 +1,14 @@
 import { useState, useEffect } from "react";
 import { Link, useLocation } from "wouter";
 import { jsPDF } from "jspdf";
-import { ChevronLeft, FileText, Plus, Trash2, Download, FilePlus } from "lucide-react";
+import { ChevronLeft, FileText, Plus, Trash2, Download, FilePlus, HelpCircle } from "lucide-react";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle, CardDescription } from "@/components/ui/card";
 import { Checkbox } from "@/components/ui/checkbox";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
+import { Tooltip, TooltipContent, TooltipTrigger } from "@/components/ui/tooltip";
 import { useSEO } from "@/hooks/use-seo";
 
 interface Party {
@@ -65,7 +66,6 @@ export default function BolGenerator() {
 
     useEffect(() => {
         const params = new URLSearchParams(window.location.search);
-        const m = params.get("m");
         const l = params.get("l");
         const w = params.get("w");
         const h = params.get("h");
@@ -73,30 +73,29 @@ export default function BolGenerator() {
         const c = params.get("c");
         const p = params.get("p");
 
-        if (m === "true") {
-            try {
-                const storedItem = localStorage.getItem("freightClassPro");
-                if (storedItem) {
-                    const parsed = JSON.parse(storedItem);
-                    const savedLoads = parsed.state?.savedLoads || [];
-                    if (savedLoads.length > 0) {
-                        setItems(savedLoads.map((load: any) => ({
-                            id: crypto.randomUUID(),
-                            qty: "1",
-                            pkgType: load.inputs.palletized ? "Pallets" : "Cartons",
-                            description: load.name || "Freight Load",
-                            nmfc: "",
-                            weight: load.inputs.weight,
-                            dims: `${load.inputs.length}x${load.inputs.width}x${load.inputs.height}`,
-                            freightClass: load.result.freightClass || "",
-                            hazmat: false
-                        })));
-                        return;
-                    }
+        // Always try to load multi-load history if it exists, since they might be navigating from the top nav
+        try {
+            const storedItem = localStorage.getItem("freightClassPro");
+            if (storedItem) {
+                const parsed = JSON.parse(storedItem);
+                const savedLoads = parsed.state?.savedLoads || [];
+                if (savedLoads.length > 0) {
+                    setItems(savedLoads.map((load: any) => ({
+                        id: crypto.randomUUID(),
+                        qty: "1",
+                        pkgType: load.inputs.palletized ? "Pallets" : "Cartons",
+                        description: load.name || "Freight Load",
+                        nmfc: "",
+                        weight: load.inputs.weight,
+                        dims: `${load.inputs.length}x${load.inputs.width}x${load.inputs.height}`,
+                        freightClass: load.result.freightClass || "",
+                        hazmat: false
+                    })));
+                    return; // Early return so we don't overwrite with URL params below
                 }
-            } catch (e) {
-                console.error("Failed to parse saved loads for BOL", e);
             }
+        } catch (e) {
+            console.error("Failed to parse saved loads for BOL", e);
         }
 
         // Only pre-populate if we actually have data, otherwise just keep empty default row
@@ -113,7 +112,7 @@ export default function BolGenerator() {
                 hazmat: false
             }]);
         }
-    }, []);
+    }, [window.location.search]);
 
     const handlePartyChange = (partyType: "shipper" | "consignee" | "billTo", field: keyof Party, value: string) => {
         const setter = partyType === "shipper" ? setShipper : partyType === "consignee" ? setConsignee : setBillTo;
@@ -350,6 +349,16 @@ export default function BolGenerator() {
             <main className="flex-1 container mx-auto px-4 py-8">
                 <div className="max-w-5xl mx-auto space-y-8">
 
+                    {items.length > 1 && (
+                        <div className="bg-primary/10 border border-primary/20 rounded-lg p-4 flex items-start gap-4 mb-2">
+                            <FilePlus className="h-5 w-5 text-primary shrink-0 mt-0.5" />
+                            <div className="text-sm text-foreground">
+                                <p className="font-semibold mb-1">Multi-Load Import Active</p>
+                                <p className="text-muted-foreground">We matched <strong>{items.length}</strong> saved loads from your Freight Calculator history. Each load has been automatically added as a line item below.</p>
+                            </div>
+                        </div>
+                    )}
+
                     <Card className="border-border">
                         <CardHeader className="pb-4">
                             <CardTitle>Shipment Header</CardTitle>
@@ -441,7 +450,16 @@ export default function BolGenerator() {
                                                     checked={item.hazmat}
                                                     onCheckedChange={c => updateItem(item.id, "hazmat", !!c)}
                                                 />
-                                                <Label htmlFor={`hazmat-${item.id}`} className="text-xs cursor-pointer text-red-500 font-bold">HM</Label>
+                                                <Tooltip>
+                                                    <TooltipTrigger asChild>
+                                                        <Label htmlFor={`hazmat-${item.id}`} className="text-xs cursor-pointer text-destructive font-bold flex items-center gap-1">
+                                                            HM <HelpCircle className="h-3 w-3 text-muted-foreground" />
+                                                        </Label>
+                                                    </TooltipTrigger>
+                                                    <TooltipContent side="top">
+                                                        <p className="max-w-xs text-xs">Check if this item contains Hazardous Materials regulated by the Department of Transportation (DOT).</p>
+                                                    </TooltipContent>
+                                                </Tooltip>
                                             </div>
                                             {items.length > 1 && (
                                                 <Button variant="ghost" size="icon" onClick={() => removeItem(item.id)} className="h-8 w-8 text-muted-foreground hover:text-destructive">

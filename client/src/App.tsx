@@ -13,6 +13,7 @@ import BolGenerator from "@/pages/bol-generator";
 import PalletOptimizer from "@/pages/pallet-optimizer";
 import NotFound from "@/pages/not-found";
 import { CookieBanner } from "@/components/cookie-banner";
+import { Navigation } from "@/components/navigation";
 
 function Router() {
   return (
@@ -34,9 +35,12 @@ function App() {
   return (
     <QueryClientProvider client={queryClient}>
       <TooltipProvider>
-        <Toaster />
-        <Router />
+        <Navigation />
+        <main className="flex-1">
+          <Router />
+        </main>
         <CookieBanner />
+        <Toaster />
       </TooltipProvider>
     </QueryClientProvider>
   );

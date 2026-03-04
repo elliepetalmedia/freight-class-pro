@@ -63,6 +63,22 @@ export default function FAQ() {
           "@type": "Answer",
           "text": "No. FreightClassPro is 100% client-side. All calculations happen in your browser and your data never leaves your device."
         }
+      },
+      {
+        "@type": "Question",
+        "name": "Are there any keyboard shortcuts for the calculator?",
+        "acceptedAnswer": {
+          "@type": "Answer",
+          "text": "Yes! Press Ctrl + Enter to quickly save your current calculation to the Multi-Load list. Press Ctrl + Shift + P to rapidly generate a PDF of your current load."
+        }
+      },
+      {
+        "@type": "Question",
+        "name": "What additional tools do you offer?",
+        "acceptedAnswer": {
+          "@type": "Answer",
+          "text": "We offer a suite of free tools for freight operations: a Commodity Lookup to find standard estimated classes, a 2D Pallet Optimizer to calculate maximum load density, and an interactive BOL Generator linked directly from your calculator results."
+        }
       }
     ]
   };
@@ -252,6 +268,39 @@ export default function FAQ() {
               <p className="text-sm">This means your shipment data stays private and you can use the tool offline once the page has loaded.</p>
             </CardContent>
           </Card>
+          <Card className="border-border">
+            <CardHeader>
+              <CardTitle className="flex items-center gap-2 text-lg">
+                <HelpCircle className="h-5 w-5 text-primary" />
+                Are there any keyboard shortcuts for the calculator?
+              </CardTitle>
+            </CardHeader>
+            <CardContent className="space-y-4 text-muted-foreground">
+              <p>Yes, we offer several power-user shortcuts to speed up your workflow:</p>
+              <ul className="list-disc list-inside space-y-2 ml-2">
+                <li><kbd className="pointer-events-none inline-flex h-5 select-none items-center gap-1 rounded border bg-muted px-1.5 font-mono text-[10px] font-medium text-muted-foreground opacity-100">Ctrl</kbd> + <kbd className="pointer-events-none inline-flex h-5 select-none items-center gap-1 rounded border bg-muted px-1.5 font-mono text-[10px] font-medium text-muted-foreground opacity-100">Enter</kbd> to quickly save your current calculation to the Multi-Load list.</li>
+                <li><kbd className="pointer-events-none inline-flex h-5 select-none items-center gap-1 rounded border bg-muted px-1.5 font-mono text-[10px] font-medium text-muted-foreground opacity-100">Ctrl</kbd> + <kbd className="pointer-events-none inline-flex h-5 select-none items-center gap-1 rounded border bg-muted px-1.5 font-mono text-[10px] font-medium text-muted-foreground opacity-100">Shift</kbd> + <kbd className="pointer-events-none inline-flex h-5 select-none items-center gap-1 rounded border bg-muted px-1.5 font-mono text-[10px] font-medium text-muted-foreground opacity-100">P</kbd> to rapidly open the PDF generation dialog for your current load.</li>
+              </ul>
+            </CardContent>
+          </Card>
+
+          <Card className="border-border">
+            <CardHeader>
+              <CardTitle className="flex items-center gap-2 text-lg">
+                <HelpCircle className="h-5 w-5 text-primary" />
+                What additional tools do you offer?
+              </CardTitle>
+            </CardHeader>
+            <CardContent className="space-y-4 text-muted-foreground">
+              <p>Alongside the LTL Density Calculator, we offer a suite of complementary logistics tools accessible via the site Navigation Menu:</p>
+              <ul className="list-disc list-inside space-y-2 ml-2">
+                <li><Link href="/commodity-lookup" className="text-primary hover:underline font-medium">Commodity Lookup</Link> - Find standard estimated freight classes and typical densities for over 50 specific commodity categories.</li>
+                <li><Link href="/pallet-optimizer" className="text-primary hover:underline font-medium">Pallet Optimizer</Link> - A 2D-layer visual bin packing tool calculating the maximum boxes that fit safely on different pallet dimensions.</li>
+                <li><Link href="/bol-generator" className="text-primary hover:underline font-medium">BOL Generator</Link> - An interactive straight Bill of Lading generator that directly incorporates your calculator results and saved multi-loads into an industry-standard PDF document.</li>
+              </ul>
+            </CardContent>
+          </Card>
+
         </div>
 
         <div className="mt-12 pt-6 border-t border-border">
