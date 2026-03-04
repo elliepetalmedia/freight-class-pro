@@ -33,6 +33,55 @@ interface LineItem {
 
 const initialParty: Party = { name: "", address: "", city: "", state: "", zip: "" };
 
+interface PartyFormProps {
+    title: string;
+    party: Party;
+    type: "shipper" | "consignee" | "billTo";
+    onChange: (type: "shipper" | "consignee" | "billTo", field: keyof Party, value: string) => void;
+}
+
+function PartyForm({ title, party, type, onChange }: PartyFormProps) {
+    return (
+        <div className="space-y-3">
+            <h3 className="font-semibold text-sm text-muted-foreground uppercase">{title}</h3>
+            <div className="space-y-2">
+                <Input
+                    placeholder="Company / Name"
+                    value={party.name}
+                    onChange={(e) => onChange(type, "name", e.target.value)}
+                    className="bg-background"
+                />
+                <Input
+                    placeholder="Street Address"
+                    value={party.address}
+                    onChange={(e) => onChange(type, "address", e.target.value)}
+                    className="bg-background"
+                />
+                <div className="grid grid-cols-3 gap-2">
+                    <Input
+                        placeholder="City"
+                        className="col-span-1 bg-background"
+                        value={party.city}
+                        onChange={(e) => onChange(type, "city", e.target.value)}
+                    />
+                    <Input
+                        placeholder="State"
+                        className="col-span-1 bg-background"
+                        value={party.state}
+                        onChange={(e) => onChange(type, "state", e.target.value)}
+                    />
+                    <Input
+                        placeholder="ZIP"
+                        className="col-span-1 bg-background"
+                        value={party.zip}
+                        onChange={(e) => onChange(type, "zip", e.target.value)}
+                    />
+                </div>
+            </div>
+        </div>
+    );
+}
+
 export default function BolGenerator() {
     useSEO(
         "Bill of Lading (BOL) Generator - FreightClassPro",
@@ -285,51 +334,12 @@ export default function BolGenerator() {
 
         yPos += 12;
         doc.setFontSize(9);
-        doc.text("Shipper Signature: _______________________   Date: _________", 15, yPos);
-        doc.text("Carrier Signature: _______________________   Date: _________", pageWidth / 2, yPos);
+        doc.text("Shipper Signature: _____________________________________   Date: ______________", 15, yPos);
+        doc.text("Carrier Signature: _____________________________________   Date: ______________", 15, yPos + 10);
 
-        doc.save(`BOL_${bolNumber}.pdf`);
+        doc.save(`${bolNumber}.pdf`);
     };
 
-    const PartyForm = ({ title, party, type }: { title: string, party: Party, type: "shipper" | "consignee" | "billTo" }) => (
-        <div className="space-y-3">
-            <h3 className="font-semibold text-sm text-muted-foreground uppercase">{title}</h3>
-            <div className="space-y-2">
-                <Input
-                    placeholder="Company / Name"
-                    value={party.name}
-                    onChange={(e) => handlePartyChange(type, "name", e.target.value)}
-                    className="bg-background"
-                />
-                <Input
-                    placeholder="Street Address"
-                    value={party.address}
-                    onChange={(e) => handlePartyChange(type, "address", e.target.value)}
-                    className="bg-background"
-                />
-                <div className="grid grid-cols-3 gap-2">
-                    <Input
-                        placeholder="City"
-                        className="col-span-1 bg-background"
-                        value={party.city}
-                        onChange={(e) => handlePartyChange(type, "city", e.target.value)}
-                    />
-                    <Input
-                        placeholder="State"
-                        className="col-span-1 bg-background"
-                        value={party.state}
-                        onChange={(e) => handlePartyChange(type, "state", e.target.value)}
-                    />
-                    <Input
-                        placeholder="ZIP"
-                        className="col-span-1 bg-background"
-                        value={party.zip}
-                        onChange={(e) => handlePartyChange(type, "zip", e.target.value)}
-                    />
-                </div>
-            </div>
-        </div>
-    );
 
     return (
         <div className="min-h-screen bg-background flex flex-col">
@@ -396,9 +406,9 @@ export default function BolGenerator() {
                     <Card className="border-border bg-secondary/10">
                         <CardContent className="pt-6">
                             <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
-                                <PartyForm title="Ship From (Shipper)" party={shipper} type="shipper" />
-                                <PartyForm title="Ship To (Consignee)" party={consignee} type="consignee" />
-                                <PartyForm title="Third Party Bill To (Optional)" party={billTo} type="billTo" />
+                                <PartyForm title="Ship From (Shipper)" party={shipper} type="shipper" onChange={handlePartyChange} />
+                                <PartyForm title="Ship To (Consignee)" party={consignee} type="consignee" onChange={handlePartyChange} />
+                                <PartyForm title="Third Party Bill To (Optional)" party={billTo} type="billTo" onChange={handlePartyChange} />
                             </div>
                         </CardContent>
                     </Card>
