@@ -112,7 +112,19 @@ export default function Home() {
   const [pdfFileName, setPdfFileName] = useState("");
   const [preparedBy, setPreparedBy] = useState("");
   const [showPdfDialog, setShowPdfDialog] = useState(false);
-  const [savedLoads, setSavedLoads] = useState<SavedLoad[]>([]);
+  const [savedLoads, setSavedLoads] = useState<SavedLoad[]>(() => {
+    try {
+      const stored = localStorage.getItem("freightClassPro_savedLoads");
+      if (stored) return JSON.parse(stored);
+    } catch (e) {
+      console.error(e);
+    }
+    return [];
+  });
+
+  useEffect(() => {
+    localStorage.setItem("freightClassPro_savedLoads", JSON.stringify(savedLoads));
+  }, [savedLoads]);
   const [loadName, setLoadName] = useState("");
   const [showSaveDialog, setShowSaveDialog] = useState(false);
   const [showMultiPdfDialog, setShowMultiPdfDialog] = useState(false);

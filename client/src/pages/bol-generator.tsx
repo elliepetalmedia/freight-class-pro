@@ -66,6 +66,7 @@ export default function BolGenerator() {
 
     useEffect(() => {
         const params = new URLSearchParams(window.location.search);
+        const m = params.get("m");
         const l = params.get("l");
         const w = params.get("w");
         const h = params.get("h");
@@ -73,29 +74,40 @@ export default function BolGenerator() {
         const c = params.get("c");
         const p = params.get("p");
 
-        // Always try to load multi-load history if it exists, since they might be navigating from the top nav
-        try {
-            const storedItem = localStorage.getItem("freightClassPro");
-            if (storedItem) {
-                const parsed = JSON.parse(storedItem);
-                const savedLoads = parsed.state?.savedLoads || [];
+        if (m === "true") {
+            try {
+                const newStored = localStorage.getItem("freightClassPro_savedLoads");
+                const oldStored = localStorage.getItem("freightClassPro");
+
+                let savedLoads: any[] = [];
+
+                if (newStored) {
+                    const parsed = JSON.parse(newStored);
+                    if (Array.isArray(parsed) && parsed.length > 0) {
+                        savedLoads = parsed;
+                    }
+                } else if (oldStored) {
+                    const parsed = JSON.parse(oldStored);
+                    savedLoads = parsed.state?.savedLoads || [];
+                }
+
                 if (savedLoads.length > 0) {
                     setItems(savedLoads.map((load: any) => ({
                         id: crypto.randomUUID(),
                         qty: "1",
-                        pkgType: load.inputs.palletized ? "Pallets" : "Cartons",
+                        pkgType: load.inputs?.palletized ? "Pallets" : "Cartons",
                         description: load.name || "Freight Load",
                         nmfc: "",
-                        weight: load.inputs.weight,
-                        dims: `${load.inputs.length}x${load.inputs.width}x${load.inputs.height}`,
-                        freightClass: load.result.freightClass || "",
+                        weight: load.inputs?.weight || "",
+                        dims: load.inputs ? `${load.inputs.length}x${load.inputs.width}x${load.inputs.height}` : "",
+                        freightClass: load.result?.freightClass || "",
                         hazmat: false
                     })));
-                    return; // Early return so we don't overwrite with URL params below
+                    return; // Early return so we don't overwrite with single URL params
                 }
+            } catch (e) {
+                console.error("Failed to parse saved loads for BOL", e);
             }
-        } catch (e) {
-            console.error("Failed to parse saved loads for BOL", e);
         }
 
         // Only pre-populate if we actually have data, otherwise just keep empty default row
