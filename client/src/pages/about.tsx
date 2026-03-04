@@ -1,7 +1,13 @@
 import { Link } from "wouter";
 import { ArrowLeft, Truck } from "lucide-react";
+import { useSEO } from "@/hooks/use-seo";
 
 export default function About() {
+  useSEO(
+    "About FreightClassPro | LTL Density Calculator",
+    "Learn about FreightClassPro, the free tool built for warehouse managers and logistics coordinators to calculate NMFC freight classes instantly."
+  );
+
   return (
     <div className="min-h-screen bg-background">
       <div className="container mx-auto px-4 py-8 max-w-3xl">

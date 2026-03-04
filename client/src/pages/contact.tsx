@@ -1,8 +1,14 @@
 import { Link } from "wouter";
 import { ArrowLeft, Mail, Building2 } from "lucide-react";
 import { Card, CardContent } from "@/components/ui/card";
+import { useSEO } from "@/hooks/use-seo";
 
 export default function Contact() {
+  useSEO(
+    "Contact Us | FreightClassPro",
+    "Contact Ellie Petal Media regarding FreightClassPro for business inquiries, advertising, and legal matters."
+  );
+
   return (
     <div className="min-h-screen bg-background">
       <div className="container mx-auto px-4 py-8 max-w-3xl">

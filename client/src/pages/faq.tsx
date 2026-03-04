@@ -1,8 +1,78 @@
 import { Link } from "wouter";
 import { ArrowLeft, Truck, HelpCircle } from "lucide-react";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
+import { useSEO } from "@/hooks/use-seo";
 
 export default function FAQ() {
+  const faqSchema = {
+    "@context": "https://schema.org",
+    "@type": "FAQPage",
+    "mainEntity": [
+      {
+        "@type": "Question",
+        "name": "How do I use the calculator?",
+        "acceptedAnswer": {
+          "@type": "Answer",
+          "text": "Select your units, enter dimensions (length, width, height) and weight. Check palletized if applicable. The calculator automatically displays your density (PCF), volume, and freight class."
+        }
+      },
+      {
+        "@type": "Question",
+        "name": "What are Quick Templates?",
+        "acceptedAnswer": {
+          "@type": "Answer",
+          "text": "Quick Templates are pre-configured dimension and weight values for common commodity types like Electronics, Furniture, Machinery, and Textiles designed for faster entry."
+        }
+      },
+      {
+        "@type": "Question",
+        "name": "How do I calculate multiple loads?",
+        "acceptedAnswer": {
+          "@type": "Answer",
+          "text": "Calculate a load, then click 'Save to Multi-Load'. Give it a name, repeat for additional loads, and view all saved loads in the section below the calculator."
+        }
+      },
+      {
+        "@type": "Question",
+        "name": "How do I export a PDF?",
+        "acceptedAnswer": {
+          "@type": "Answer",
+          "text": "For single loads, click 'Download PDF' after calculating. For multiple loads, save them to Multi-Load first, then click 'Export All' for a consolidated report."
+        }
+      },
+      {
+        "@type": "Question",
+        "name": "What information is included in the PDF?",
+        "acceptedAnswer": {
+          "@type": "Answer",
+          "text": "The PDF includes a header, file name, date/time, 'Prepared By' name, shipment details (dimensions/weight), and the calculated density, volume, and freight class."
+        }
+      },
+      {
+        "@type": "Question",
+        "name": "What is the NMFC density-based classification?",
+        "acceptedAnswer": {
+          "@type": "Answer",
+          "text": "The National Motor Freight Classification (NMFC) system assigns freight classes based on density (pounds per cubic foot). There are 13 tiers ranging from Class 400 (less than 1 PCF) to Class 50 (50+ PCF)."
+        }
+      },
+      {
+        "@type": "Question",
+        "name": "Is my data saved or uploaded anywhere?",
+        "acceptedAnswer": {
+          "@type": "Answer",
+          "text": "No. FreightClassPro is 100% client-side. All calculations happen in your browser and your data never leaves your device."
+        }
+      }
+    ]
+  };
+
+  useSEO(
+    "Frequently Asked Questions | FreightClassPro",
+    "Get answers to common questions about calculating LTL freight classes, NMFC density guidelines, and using the FreightClassPro calculator.",
+    faqSchema
+  );
+
   return (
     <div className="min-h-screen bg-background">
       <div className="container mx-auto px-4 py-8 max-w-3xl">
@@ -91,13 +161,13 @@ export default function FAQ() {
             </CardHeader>
             <CardContent className="space-y-4 text-muted-foreground">
               <p>There are two ways to export PDF reports:</p>
-              
+
               <div className="space-y-3">
                 <div>
                   <p className="font-medium text-foreground">Single Load PDF:</p>
                   <p>After calculating a load, click "Download PDF". Enter a file name and click Download. The PDF will be saved to your device.</p>
                 </div>
-                
+
                 <div>
                   <p className="font-medium text-foreground">Multi-Load PDF:</p>
                   <p>After saving multiple loads, click "Export All" in the Saved Loads section. This creates a consolidated report with all your saved calculations.</p>

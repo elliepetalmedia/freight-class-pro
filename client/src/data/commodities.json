@@ -1,0 +1,387 @@
+[
+    {
+        "category": "Electronics",
+        "commodity": "Computer Equipment (boxed)",
+        "typicalClass": "85-100",
+        "typicalDensity": "8-12",
+        "notes": "Varies by packaging density"
+    },
+    {
+        "category": "Electronics",
+        "commodity": "Televisions / Monitors",
+        "typicalClass": "125-175",
+        "typicalDensity": "4-8",
+        "notes": "Highly fragile; check dimensions"
+    },
+    {
+        "category": "Electronics",
+        "commodity": "Servers / Server Racks",
+        "typicalClass": "70-85",
+        "typicalDensity": "12-15",
+        "notes": "High density, often palletized"
+    },
+    {
+        "category": "Electronics",
+        "commodity": "Consumer Electronics (mixed)",
+        "typicalClass": "100-150",
+        "typicalDensity": "6-10",
+        "notes": "Classifies mostly by density"
+    },
+    {
+        "category": "Electronics",
+        "commodity": "Telecommunications Equipment",
+        "typicalClass": "85",
+        "typicalDensity": "12-15",
+        "notes": ""
+    },
+    {
+        "category": "Furniture",
+        "commodity": "Couches / Sofas",
+        "typicalClass": "175-250",
+        "typicalDensity": "2-4",
+        "notes": "Extremely low density"
+    },
+    {
+        "category": "Furniture",
+        "commodity": "Wooden Chairs (fully assembled)",
+        "typicalClass": "250-300",
+        "typicalDensity": "1-2",
+        "notes": "High class due to assembled state"
+    },
+    {
+        "category": "Furniture",
+        "commodity": "Office Desks (unassembled/flat-pack)",
+        "typicalClass": "70-85",
+        "typicalDensity": "12-15",
+        "notes": "Much denser than assembled"
+    },
+    {
+        "category": "Furniture",
+        "commodity": "Mattresses",
+        "typicalClass": "250",
+        "typicalDensity": "2-4",
+        "notes": "Lightweight and bulky"
+    },
+    {
+        "category": "Furniture",
+        "commodity": "Cabinets (wood/metal)",
+        "typicalClass": "100-150",
+        "typicalDensity": "6-10",
+        "notes": "Varies heavily on material thickess"
+    },
+    {
+        "category": "Food & Beverage",
+        "commodity": "Canned Goods",
+        "typicalClass": "55-60",
+        "typicalDensity": "35+",
+        "notes": "Very high density"
+    },
+    {
+        "category": "Food & Beverage",
+        "commodity": "Bottled Beverages (Water/Soda)",
+        "typicalClass": "50-55",
+        "typicalDensity": "40+",
+        "notes": "Extremely heavy per cubic foot"
+    },
+    {
+        "category": "Food & Beverage",
+        "commodity": "Dry Snacks (Chips/Pretzels)",
+        "typicalClass": "150-200",
+        "typicalDensity": "3-6",
+        "notes": "Mostly air; very lightweight"
+    },
+    {
+        "category": "Food & Beverage",
+        "commodity": "Coffee Beans / Grounds",
+        "typicalClass": "65-70",
+        "typicalDensity": "22-30",
+        "notes": "Dense when packed in bulk bags"
+    },
+    {
+        "category": "Food & Beverage",
+        "commodity": "Frozen/Refrigerated Food (packaged)",
+        "typicalClass": "60-70",
+        "typicalDensity": "15-30",
+        "notes": "Usually requires temperature control"
+    },
+    {
+        "category": "Machinery",
+        "commodity": "Industrial Machinery / Lathes",
+        "typicalClass": "70",
+        "typicalDensity": "15-22",
+        "notes": "Heavy but requires secure crating"
+    },
+    {
+        "category": "Machinery",
+        "commodity": "Generators / Compressors",
+        "typicalClass": "85",
+        "typicalDensity": "12-15",
+        "notes": "Often crated or palletized securely"
+    },
+    {
+        "category": "Machinery",
+        "commodity": "HVAC Equipment",
+        "typicalClass": "100-150",
+        "typicalDensity": "6-10",
+        "notes": "Bulky, large units often lower density"
+    },
+    {
+        "category": "Machinery",
+        "commodity": "Hand Tools",
+        "typicalClass": "60",
+        "typicalDensity": "30-35",
+        "notes": "Dense and heavy"
+    },
+    {
+        "category": "Machinery",
+        "commodity": "Pumps and Motors",
+        "typicalClass": "70-85",
+        "typicalDensity": "12-20",
+        "notes": ""
+    },
+    {
+        "category": "Textiles",
+        "commodity": "Clothing (in boxes/cartons)",
+        "typicalClass": "100",
+        "typicalDensity": "8-10",
+        "notes": "Often shipped in corrugate"
+    },
+    {
+        "category": "Textiles",
+        "commodity": "Fabric Rolls (Bolts)",
+        "typicalClass": "85",
+        "typicalDensity": "12-15",
+        "notes": "Heavy when rolled tightly"
+    },
+    {
+        "category": "Textiles",
+        "commodity": "Towels / Linens",
+        "typicalClass": "100",
+        "typicalDensity": "8-10",
+        "notes": ""
+    },
+    {
+        "category": "Textiles",
+        "commodity": "Carpet / Rugs (rolled)",
+        "typicalClass": "70-85",
+        "typicalDensity": "12-20",
+        "notes": "Depending on pile height and backing"
+    },
+    {
+        "category": "Textiles",
+        "commodity": "Shoes & Footwear",
+        "typicalClass": "125-150",
+        "typicalDensity": "6-8",
+        "notes": "Shoe boxes leave air gaps"
+    },
+    {
+        "category": "Paper/Packaging",
+        "commodity": "Copy Paper (cartons)",
+        "typicalClass": "55",
+        "typicalDensity": "40+",
+        "notes": "Extremely dense"
+    },
+    {
+        "category": "Paper/Packaging",
+        "commodity": "Corrugated Boxes (knocked down/flat)",
+        "typicalClass": "65",
+        "typicalDensity": "22-30",
+        "notes": "Densely packed when flat"
+    },
+    {
+        "category": "Paper/Packaging",
+        "commodity": "Printed Matter / Books",
+        "typicalClass": "60",
+        "typicalDensity": "30-35",
+        "notes": "Heavy and compact"
+    },
+    {
+        "category": "Paper/Packaging",
+        "commodity": "Display Cartons (empty/assembled)",
+        "typicalClass": "250-300",
+        "typicalDensity": "1-3",
+        "notes": "Mostly air"
+    },
+    {
+        "category": "Paper/Packaging",
+        "commodity": "Plastic Wrap / Shrink Film",
+        "typicalClass": "65",
+        "typicalDensity": "22-30",
+        "notes": "Dense when in rolls"
+    },
+    {
+        "category": "Chemicals",
+        "commodity": "Cleaning Compounds (liquid/powder)",
+        "typicalClass": "55-60",
+        "typicalDensity": "35+",
+        "notes": "In drums or pails"
+    },
+    {
+        "category": "Chemicals",
+        "commodity": "Lubricants / Oils",
+        "typicalClass": "65",
+        "typicalDensity": "22-30",
+        "notes": "Often in 55-gallon drums"
+    },
+    {
+        "category": "Chemicals",
+        "commodity": "Paint (liquid)",
+        "typicalClass": "55-60",
+        "typicalDensity": "30+",
+        "notes": "In cans or pails; check if Hazmat"
+    },
+    {
+        "category": "Chemicals",
+        "commodity": "Plastic Pellets / Resin",
+        "typicalClass": "60-65",
+        "typicalDensity": "25-30",
+        "notes": "Bulk bags or gaylords"
+    },
+    {
+        "category": "Chemicals",
+        "commodity": "Fertilizers",
+        "typicalClass": "50-55",
+        "typicalDensity": "45+",
+        "notes": "Very dense, stored in bulk bags"
+    },
+    {
+        "category": "Building Materials",
+        "commodity": "Lumber / Wood Boards",
+        "typicalClass": "55-60",
+        "typicalDensity": "35+",
+        "notes": "Dense but long"
+    },
+    {
+        "category": "Building Materials",
+        "commodity": "Bricks / Pavers",
+        "typicalClass": "50",
+        "typicalDensity": "50+",
+        "notes": "Extremely heavy"
+    },
+    {
+        "category": "Building Materials",
+        "commodity": "Doors / Windows (framed)",
+        "typicalClass": "100-125",
+        "typicalDensity": "8-10",
+        "notes": "Easily damaged, requires glass care"
+    },
+    {
+        "category": "Building Materials",
+        "commodity": "Plumbing Fixtures (Porcelain)",
+        "typicalClass": "100-125",
+        "typicalDensity": "8-10",
+        "notes": "Fragile"
+    },
+    {
+        "category": "Building Materials",
+        "commodity": "PVC Pipes",
+        "typicalClass": "150",
+        "typicalDensity": "6-8",
+        "notes": "Lightweight but takes up large volume"
+    },
+    {
+        "category": "Auto Parts",
+        "commodity": "Engines (crated)",
+        "typicalClass": "70",
+        "typicalDensity": "15-22",
+        "notes": "Must be drained of fluids"
+    },
+    {
+        "category": "Auto Parts",
+        "commodity": "Tires",
+        "typicalClass": "100-125",
+        "typicalDensity": "8-12",
+        "notes": "Bulky and difficult to stack neatly"
+    },
+    {
+        "category": "Auto Parts",
+        "commodity": "Car Body Parts (bumpers, hoods)",
+        "typicalClass": "150-250",
+        "typicalDensity": "2-6",
+        "notes": "Extremely bulky geometry"
+    },
+    {
+        "category": "Auto Parts",
+        "commodity": "Batteries (Lead Acid)",
+        "typicalClass": "60",
+        "typicalDensity": "30-35",
+        "notes": "Very dense; requires Hazmat protocol"
+    },
+    {
+        "category": "Auto Parts",
+        "commodity": "Brake Pads / Rotors",
+        "typicalClass": "60",
+        "typicalDensity": "30-35",
+        "notes": "Heavy cast metal components"
+    },
+    {
+        "category": "Medical",
+        "commodity": "Medical Devices",
+        "typicalClass": "100-150",
+        "typicalDensity": "8-12",
+        "notes": "High liability; shock sensitive"
+    },
+    {
+        "category": "Medical",
+        "commodity": "Hospital Beds",
+        "typicalClass": "150",
+        "typicalDensity": "6-8",
+        "notes": "Bulky and awkwardly shaped"
+    },
+    {
+        "category": "Medical",
+        "commodity": "Surgical Instruments",
+        "typicalClass": "85-100",
+        "typicalDensity": "10-15",
+        "notes": "Valuable and dense"
+    },
+    {
+        "category": "Medical",
+        "commodity": "Pharmaceuticals",
+        "typicalClass": "85-100",
+        "typicalDensity": "10-15",
+        "notes": "High value, may require reefer check"
+    },
+    {
+        "category": "Medical",
+        "commodity": "Disposable Supplies (gowns, masks)",
+        "typicalClass": "150",
+        "typicalDensity": "4-6",
+        "notes": "Lightweight and packaged loosely"
+    },
+    {
+        "category": "Retail",
+        "commodity": "Toys (plastic/boxed)",
+        "typicalClass": "125-150",
+        "typicalDensity": "6-8",
+        "notes": "High volume of packaging air"
+    },
+    {
+        "category": "Retail",
+        "commodity": "Sporting Goods",
+        "typicalClass": "100-150",
+        "typicalDensity": "8-10",
+        "notes": "Highly variable"
+    },
+    {
+        "category": "Retail",
+        "commodity": "Luggage / Bags",
+        "typicalClass": "150-200",
+        "typicalDensity": "3-6",
+        "notes": "Bulky but lightweight"
+    },
+    {
+        "category": "Retail",
+        "commodity": "Cosmetics",
+        "typicalClass": "85-100",
+        "typicalDensity": "10-15",
+        "notes": "Often dense but small shipments"
+    },
+    {
+        "category": "Retail",
+        "commodity": "Hardware (Nails, Screws)",
+        "typicalClass": "50-55",
+        "typicalDensity": "40+",
+        "notes": "Very heavy; solid metal"
+    }
+]
