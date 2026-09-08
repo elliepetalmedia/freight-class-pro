@@ -1,3 +1,19 @@
 User-agent: *
 Allow: /
 Sitemap: https://freightclasspro.com/sitemap.xml
+
+# AI search / assistants may crawl and cite public pages for answers with attribution.
+User-agent: GPTBot
+Allow: /
+
+User-agent: ChatGPT-User
+Allow: /
+
+User-agent: ClaudeBot
+Allow: /
+
+User-agent: PerplexityBot
+Allow: /
+
+User-agent: Google-Extended
+Allow: /

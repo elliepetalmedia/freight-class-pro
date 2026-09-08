@@ -13,11 +13,22 @@ import {
 } from "@/components/ui/table";
 import { useSEO } from "@/hooks/use-seo";
 import commoditiesData from "@/data/commodities.json";
+import { commoditySlug } from "@/lib/slug";
 
 export default function CommodityLookup() {
     useSEO(
-        "Commodity Freight Class Lookup - FreightClassPro",
-        "Search typical freight classes and densities for over 50 common commodities including electronics, furniture, building materials, and more."
+        "Commodity Freight Class Lookup — 50+ Typical Classes & Densities | FreightClassPro",
+        "Search typical freight classes and densities for 50+ commodities: electronics, furniture, food, machinery, building materials. Each entry links to a citable detail page.",
+        {
+            "@context": "https://schema.org",
+            "@type": "Dataset",
+            name: "Typical LTL Freight Classes by Commodity",
+            description:
+                "Estimate-only reference of typical freight classes and density ranges by commodity. Actual class depends on measured density, NMFC, packaging, and handling.",
+            url: "https://freightclasspro.com/commodity-lookup",
+            publisher: { "@type": "Organization", name: "Ellie Petal Media", url: "https://freightclasspro.com" },
+            dateModified: "2026-09-01",
+        }
     );
 
     const [, setLocation] = useLocation();
@@ -42,22 +53,18 @@ export default function CommodityLookup() {
     }, [searchTerm, categoryFilter]);
 
     const navigateToCalculator = (densityStr: string) => {
-        // Basic heuristic to populate calculator with roughly the right density 
-        // Just pass empty dims and a fake weight so density calculates correctly,
-        // OR just pass the user to the calculator blank and let them fill it in.
-        // Spec: "Each row has a 'Calculate' link that pre-populates the calculator with typical dims"
-        // We can just send them with a 100 lb box and adjusting dims to match the middle of the density range.
+        // Pre-fill the calculator with representative dims for the typical density midpoint.
+        // This is an estimate starter, not the item's actual dims — user must enter real measurements.
+        // Parse ranges like "8-12" (midpoint 10) or "35+" (use 35).
+        const nums = (densityStr.match(/(\d+(\.\d+)?)/g) || []).map(Number);
+        const densityVal = nums.length >= 2 ? (nums[0] + nums[1]) / 2 : (nums[0] || 10);
 
-        // Parse density range "8-12" or "35+"
-        const match = densityStr.match(/(\d+)/);
-        const densityVal = match ? parseInt(match[1]) : 10;
-
-        // Weight = density * volume. Let's assume Volume = 10 cu ft. So Weight = densityVal * 10
+        // Weight = density * volume. Assume Volume = 10 cu ft. So Weight = densityVal * 10
         // L=30, W=24, H=24 (10 cu ft)
         const l = "30";
         const w = "24";
         const h = "24";
-        const wt = (densityVal * 10).toString();
+        const wt = (Math.round(densityVal * 10 * 100) / 100).toString();
 
         setLocation(`/?l=${l}&w=${w}&h=${h}&wt=${wt}&m=false&p=false`);
     };
@@ -86,7 +93,7 @@ export default function CommodityLookup() {
                 <div className="max-w-5xl mx-auto space-y-6">
                     <div className="bg-amber-50 dark:bg-amber-950/30 border border-amber-200 dark:border-amber-900 rounded-lg p-4">
                         <p className="text-sm text-amber-800 dark:text-amber-300 font-medium">
-                            Disclaimer: These are rough estimates based on typical density ranges. Actual freight class depends on your specific item's NMFC number, exact density, packaging, and handling requirements.
+                            Disclaimer: These are rough estimates based on typical density ranges. Actual freight class depends on your specific item's NMFC number, exact density, packaging, and handling requirements. “Calculate” pre-fills representative 30×24×24 in dimensions at the range midpoint — replace with your real measurements.
                         </p>
                     </div>
 
@@ -135,7 +142,14 @@ export default function CommodityLookup() {
                                         {filteredCommodities.length > 0 ? (
                                             filteredCommodities.map((item, idx) => (
                                                 <TableRow key={idx}>
-                                                    <TableCell className="font-medium">{item.commodity}</TableCell>
+                                                    <TableCell className="font-medium">
+                                                        <Link
+                                                            href={`/commodity/${commoditySlug(item.commodity)}`}
+                                                            className="text-foreground hover:text-primary hover:underline"
+                                                        >
+                                                            {item.commodity}
+                                                        </Link>
+                                                    </TableCell>
                                                     <TableCell className="text-muted-foreground">{item.category}</TableCell>
                                                     <TableCell className="text-center font-mono font-bold text-primary">{item.typicalClass}</TableCell>
                                                     <TableCell className="text-center">{item.typicalDensity} PCF</TableCell>

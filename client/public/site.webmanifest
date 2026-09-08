@@ -1,0 +1,17 @@
+{
+  "name": "FreightClassPro",
+  "short_name": "FreightClassPro",
+  "description": "Free LTL density calculator, commodity lookup, pallet optimizer, and BOL generator. 100% client-side.",
+  "start_url": "/",
+  "display": "standalone",
+  "background_color": "#0f172a",
+  "theme_color": "#0f172a",
+  "icons": [
+    {
+      "src": "/favicon.png",
+      "sizes": "512x512",
+      "type": "image/png",
+      "purpose": "any maskable"
+    }
+  ]
+}

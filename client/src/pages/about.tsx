@@ -4,8 +4,8 @@ import { useSEO } from "@/hooks/use-seo";
 
 export default function About() {
   useSEO(
-    "About FreightClassPro | LTL Density Calculator",
-    "Learn about FreightClassPro, the free tool built for warehouse managers and logistics coordinators to calculate NMFC freight classes instantly."
+    "About FreightClassPro — Free LTL Tools by Ellie Petal Media",
+    "FreightClassPro by Ellie Petal Media: free LTL density calculator, commodity lookup, pallet optimizer, and BOL generator. Client-side, no login. Methodology + review process."
   );
 
   return (
@@ -30,7 +30,11 @@ export default function About() {
         <div className="space-y-6 text-foreground">
           <p className="leading-relaxed">
             FreightClassPro.com is a digital utility project published by{" "}
-            <strong>Ellie Petal Media</strong>.
+            <strong>Ellie Petal Media</strong>. Contact:{" "}
+            <a href="mailto:legal@freightclasspro.com" className="text-primary hover:underline">
+              legal@freightclasspro.com
+            </a>
+            . Last reviewed September 1, 2026.
           </p>
 
           <p className="leading-relaxed">
@@ -40,6 +44,17 @@ export default function About() {
             standard density formulas provided by the NMFTA to give you the most
             likely classification for your LTL shipments.
           </p>
+
+          <div className="rounded-lg border border-border bg-secondary/20 p-4 text-sm text-muted-foreground leading-relaxed">
+            <p className="font-semibold text-foreground mb-2">Methodology & limits</p>
+            <p>
+              PCF = lbs ÷ ((L×W×H in) ÷ 1,728); metric converts first (in = cm ÷ 2.54, lbs = kg × 2.20462).
+              Palletized floors at 48×40 in; pallet tare/height not auto-added. Commodity entries are typical-density
+              estimates, not NMFC rulings. Always confirm final class + NMFC number with your carrier. See{" "}
+              <Link href="/guides/how-to-calculate-freight-density" className="text-primary hover:underline">density guide</Link> and{" "}
+              <Link href="/privacy" className="text-primary hover:underline">privacy policy</Link>.
+            </p>
+          </div>
 
           <div className="border-t border-border pt-6 mt-8">
             <h2 className="text-lg font-semibold mb-4">Why Use FreightClassPro?</h2>

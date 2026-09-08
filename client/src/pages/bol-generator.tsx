@@ -1,6 +1,5 @@
 import { useState, useEffect } from "react";
 import { Link, useLocation } from "wouter";
-import { jsPDF } from "jspdf";
 import { ChevronLeft, FileText, Plus, Trash2, Download, FilePlus, HelpCircle } from "lucide-react";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
@@ -84,8 +83,8 @@ function PartyForm({ title, party, type, onChange }: PartyFormProps) {
 
 export default function BolGenerator() {
     useSEO(
-        "Bill of Lading (BOL) Generator - FreightClassPro",
-        "Create and download a standard VICS Bill of Lading document in PDF format instantly. 100% private, runs entirely in your browser."
+        "Free BOL Generator — Straight Bill of Lading PDF (VICS) | FreightClassPro",
+        "Create a printable straight Bill of Lading PDF: shipper/consignee, NMFC class, dims, weight, HM, signatures. Imports calculator + multi-load. 100% private in-browser."
     );
 
     const [, setLocation] = useLocation();
@@ -204,7 +203,8 @@ export default function BolGenerator() {
         }
     };
 
-    const generatePDF = () => {
+    const generatePDF = async () => {
+        const { jsPDF } = await import("jspdf");
         const doc = new jsPDF();
         const pageWidth = doc.internal.pageSize.getWidth();
         let yPos = 15;

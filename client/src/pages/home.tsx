@@ -6,7 +6,6 @@ import { Label } from "@/components/ui/label";
 import { Switch } from "@/components/ui/switch";
 import { Link } from "wouter";
 import { RotateCcw, Truck, Package, Calculator, Scale, Plus, Minus, Download, ChevronDown, Save, Trash2, FileText, X, HelpCircle, Shield, Copy, Check, Share2, History } from "lucide-react";
-import { jsPDF } from "jspdf";
 import { motion, AnimatePresence } from "framer-motion";
 import { useSEO } from "@/hooks/use-seo";
 import { useCalculationHistory } from "@/hooks/useCalculationHistory";
@@ -85,20 +84,42 @@ function getInitialInputs(): CalculatorInputs {
 
 export default function Home() {
   useSEO(
-    "FreightClassPro - LTL Density Calculator | NMFC Freight Class",
-    "Free LTL Density Calculator. Calculate freight class based on NMFC density guidelines. Accurate density-to-class mapping for warehouse managers and logistics coordinators.",
+    "Freight Class Calculator — Free LTL Density (PCF) to NMFC Class | FreightClassPro",
+    "Free LTL freight class calculator: enter L×W×H + weight (in/lbs or cm/kg) to get PCF, volume, and NMFC Class 50–400. Multi-load, PDF manifest, BOL generator, pallet optimizer.",
     {
       "@context": "https://schema.org",
-      "@type": "WebApplication",
-      "name": "FreightClassPro",
-      "description": "Calculate freight class based on NMFC density guidelines. Free, accurate, and easy to use.",
-      "applicationCategory": "BusinessApplication",
-      "operatingSystem": "All",
-      "offers": {
-        "@type": "Offer",
-        "price": "0",
-        "priceCurrency": "USD"
-      }
+      "@graph": [
+        {
+          "@type": "WebApplication",
+          name: "FreightClassPro",
+          url: "https://freightclasspro.com/",
+          description: "Free LTL density calculator with NMFC class mapping, multi-load PDF, BOL generator, and pallet optimizer. 100% client-side.",
+          applicationCategory: "BusinessApplication",
+          operatingSystem: "All",
+          dateModified: "2026-09-01",
+          offers: { "@type": "Offer", price: "0", priceCurrency: "USD" },
+          publisher: { "@type": "Organization", name: "Ellie Petal Media", url: "https://freightclasspro.com" },
+        },
+        {
+          "@type": "HowTo",
+          name: "How to calculate freight density (PCF)",
+          description: "Measure L×W×H, divide by 1728 for cubic feet, divide weight by cubic feet for PCF, map to NMFC class.",
+          step: [
+            { "@type": "HowToStep", text: "Measure Length, Width, Height in inches (full loaded pallet if palletized)." },
+            { "@type": "HowToStep", text: "Volume cu ft = (L × W × H) ÷ 1728." },
+            { "@type": "HowToStep", text: "Density PCF = Weight lbs ÷ Volume cu ft (convert cm/kg first if metric)." },
+            { "@type": "HowToStep", text: "Map PCF to 13-tier NMFC table (50+ PCF = Class 50 … <1 PCF = Class 400)." },
+          ],
+        },
+        {
+          "@type": "BreadcrumbList",
+          itemListElement: [
+            { "@type": "ListItem", position: 1, name: "Home", item: "https://freightclasspro.com/" },
+            { "@type": "ListItem", position: 2, name: "Guides", item: "https://freightclasspro.com/guides" },
+            { "@type": "ListItem", position: 3, name: "Commodity Lookup", item: "https://freightclasspro.com/commodity-lookup" },
+          ],
+        },
+      ],
     }
   );
 
@@ -285,9 +306,10 @@ export default function Home() {
     setShowTemplates(false);
   };
 
-  const downloadPDF = () => {
+  const downloadPDF = async () => {
     if (!result.density || !result.freightClass) return;
 
+    const { jsPDF } = await import("jspdf");
     const doc = new jsPDF();
     const pageWidth = doc.internal.pageSize.getWidth();
     const lineHeight = 8;
@@ -395,9 +417,10 @@ export default function Home() {
     setSavedLoads([]);
   };
 
-  const downloadMultiLoadPDF = () => {
+  const downloadMultiLoadPDF = async () => {
     if (savedLoads.length === 0) return;
 
+    const { jsPDF } = await import("jspdf");
     const doc = new jsPDF();
     const pageWidth = doc.internal.pageSize.getWidth();
     const docPageHeight = doc.internal.pageSize.getHeight();
@@ -570,6 +593,9 @@ export default function Home() {
                     />
                   </div>
                 </div>
+                <p className="text-xs text-muted-foreground leading-relaxed" data-testid="text-pallet-note">
+                  Palletized uses a 48&quot; × 40&quot; floor minimum. Enter the full loaded height and total weight including the pallet for the most defensible result. Tare is not auto-added.
+                </p>
 
                 <div className="space-y-4">
                   <div className="flex items-center gap-2 text-sm font-medium text-muted-foreground">
@@ -1256,11 +1282,15 @@ export default function Home() {
         </div>
 
         <article className="max-w-3xl mx-auto mt-12 md:mt-16 px-4" data-testid="article-seo">
+          <p className="text-xs text-muted-foreground mb-4">Updated September 1, 2026 · Methodology disclosed below · Estimates only — confirm with carrier + NMFC</p>
           <h2 className="text-2xl md:text-3xl font-bold text-foreground mb-4" data-testid="heading-nmfc">
             What is Freight Class?
           </h2>
+          <p className="text-muted-foreground mb-4 leading-relaxed">
+            <strong className="text-foreground">Freight class is a standardized LTL pricing category (Class 50–400) set by NMFTA/CCSB.</strong> Denser freight gets a lower class and usually costs less; bulkier freight gets a higher class and usually costs more. For density-based commodities, class comes directly from pounds per cubic foot (PCF).
+          </p>
           <p className="text-muted-foreground mb-8 leading-relaxed">
-            In the Less-Than-Truckload (LTL) shipping industry, freight class is a standardized pricing classification established by the National Motor Freight Traffic Association (NMFTA). It determines how much you pay to ship your goods. Classes range from 50 (the cheapest, highest density) to 400 (the most expensive, lowest density). By correctly identifying your freight class using a density calculator, you ensure accurate quotes and avoid unexpected carrier re-classification fees.
+            In the Less-Than-Truckload (LTL) shipping industry, freight class is a standardized pricing classification established by the National Motor Freight Traffic Association (NMFTA). It determines how much you pay to ship your goods. Classes range from 50 (the cheapest, highest density) to 400 (the most expensive, lowest density). By correctly identifying your freight class using a density calculator, you ensure accurate quotes and avoid unexpected carrier re-classification fees. See the full <Link href="/guides/how-to-calculate-freight-density" className="text-primary hover:underline">density calculation guide</Link>.
           </p>
 
           <h2 className="text-xl md:text-2xl font-semibold text-foreground mb-3" data-testid="heading-density-calc">
@@ -1275,6 +1305,7 @@ export default function Home() {
               <li><strong>Calculate Density (PCF):</strong> Divide the total weight of the shipment (in pounds) by the total volume (in cubic feet). </li>
             </ol>
             <p>The resulting number is your Pounds per Cubic Foot (PCF), which maps perfectly to the 13-tier NMFC density guidelines.</p>
+            <p className="text-xs">Methodology: Volume cu ft = (L×W×H in) ÷ 1,728. PCF = lbs ÷ cu ft. Metric converts first (in = cm ÷ 2.54, lbs = kg × 2.20462). Palletized floors at 48×40 in; pallet tare/height not auto-added — enter totals including the pallet. Worked example: 48×40×48 in at 800 lbs = 53.33 cu ft = 15.0 PCF = Class 70.</p>
           </div>
 
           <h2 className="text-xl md:text-2xl font-semibold text-foreground mb-3" data-testid="heading-nmfc-vs-density">
@@ -1299,7 +1330,7 @@ export default function Home() {
               <tbody>
                 <tr><td className="p-2 border border-border">Class 50</td><td className="p-2 border border-border">50+</td><td className="p-2 border border-border">Nuts, bolts, steel, heavy building materials</td></tr>
                 <tr><td className="p-2 border border-border">Class 85</td><td className="p-2 border border-border">12 to 15</td><td className="p-2 border border-border">Auto parts, cast iron stoves, boxed machinery</td></tr>
-                <tr><td className="p-2 border border-border">Class 150</td><td className="p-2 border border-border">6 to 8</td><td className="p-2 border border-border">Assembled wooden furniture, sheet metal parts</td></tr>
+                <tr><td className="p-2 border border-border">Class 125</td><td className="p-2 border border-border">6 to 8</td><td className="p-2 border border-border">Assembled wooden furniture, sheet metal parts</td></tr>
                 <tr><td className="p-2 border border-border">Class 400</td><td className="p-2 border border-border">Less than 1</td><td className="p-2 border border-border">Ping pong balls, highly fragile/bulky items</td></tr>
               </tbody>
             </table>
@@ -1308,8 +1339,11 @@ export default function Home() {
           <h2 className="text-xl md:text-2xl font-semibold text-foreground mb-3" data-testid="heading-reclass">
             How to Avoid Re-Classification Fees
           </h2>
-          <p className="text-muted-foreground leading-relaxed">
+          <p className="text-muted-foreground leading-relaxed mb-4">
             Carriers frequently re-weigh and re-measure pallets at terminals. If your Bill of Lading (BOL) lists an incorrect class (e.g., you guessed Class 70 but the true density dictates Class 100), the carrier will issue a "Re-Class Fee" adjustment on your final invoice. The best way to protect your profit margins is to document dimensions accurately, always factor in the pallet weight and size, and use an accurate density calculator before quoting shipping rates to your customers.
+          </p>
+          <p className="text-sm text-muted-foreground leading-relaxed">
+            Next steps: <Link href="/guides/how-to-avoid-reclassification-fees" className="text-primary hover:underline">re-class prevention checklist</Link> · <Link href="/commodity-lookup" className="text-primary hover:underline">typical commodity classes</Link> · <Link href="/pallet-optimizer" className="text-primary hover:underline">pallet optimizer (cm/kg + in/lbs)</Link> · <Link href="/bol-generator" className="text-primary hover:underline">BOL generator</Link> · <Link href="/guides" className="text-primary hover:underline">all guides</Link>
           </p>
         </article>
       </main>
@@ -1329,6 +1363,9 @@ export default function Home() {
               </Link>
               <Link href="/pallet-optimizer" className="text-sm text-muted-foreground hover:text-primary transition-colors" data-testid="link-pallet">
                 Pallet Optimizer
+              </Link>
+              <Link href="/guides" className="text-sm text-muted-foreground hover:text-primary transition-colors" data-testid="link-guides">
+                Guides
               </Link>
               <Link href="/contact" className="text-sm text-muted-foreground hover:text-primary transition-colors" data-testid="link-contact">
                 Contact

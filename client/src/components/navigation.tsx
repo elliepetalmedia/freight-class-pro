@@ -1,6 +1,6 @@
 import { useState } from "react";
 import { Link, useLocation } from "wouter";
-import { Menu, X, Package, LayoutGrid, FileText, Calculator, HelpCircle } from "lucide-react";
+import { Menu, X, Package, LayoutGrid, FileText, Calculator, HelpCircle, BookOpen } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import {
     DropdownMenu,
@@ -17,6 +17,7 @@ export function Navigation() {
 
     const navLinks = [
         { path: "/", label: "Home", icon: Calculator },
+        { path: "/guides", label: "Guides", icon: BookOpen },
         { path: "/faq", label: "FAQ", icon: HelpCircle },
     ];
 

@@ -5,8 +5,8 @@ import { useSEO } from "@/hooks/use-seo";
 
 export default function Contact() {
   useSEO(
-    "Contact Us | FreightClassPro",
-    "Contact Ellie Petal Media regarding FreightClassPro for business inquiries, advertising, and legal matters."
+    "Contact Ellie Petal Media — FreightClassPro Support & Business Inquiries",
+    "Contact FreightClassPro for corrections, methodology questions, advertising, and legal matters. Estimates only — always confirm class with your carrier."
   );
 
   return (

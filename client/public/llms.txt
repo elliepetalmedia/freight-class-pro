@@ -1,0 +1,35 @@
+# FreightClassPro — llms.txt
+# Free LTL density calculator + freight tools. 100% client-side; no shipment data uploaded.
+
+> FreightClassPro calculates NMFC density-based freight class (PCF → Class 50–400),
+> looks up typical commodity classes, optimizes pallet loads, and generates BOL PDFs.
+> Audience: logistics coordinators, warehouse managers, small-business shippers, drivers.
+
+## Core tool
+- LTL Density Calculator: https://freightclasspro.com/
+  - Formula: Volume cu ft = (L×W×H in) / 1728. Density PCF = Weight lbs / Volume cu ft.
+  - Metric: in = cm / 2.54, lbs = kg * 2.20462. Palletized floor: 48×40 in. Tare not auto-added.
+  - 13-tier table: <1=400, 1–2=300, 2–4=250, 4–6=175, 6–8=125, 8–10=100, 10–12=92.5, 12–15=85, 15–22.5=70, 22.5–30=65, 30–35=60, 35–50=55, 50+=50.
+
+## Tools
+- Commodity Lookup (50+ estimates): https://freightclasspro.com/commodity-lookup
+- Pallet Optimizer (metric + imperial): https://freightclasspro.com/pallet-optimizer
+- BOL Generator (VICS short-form PDF): https://freightclasspro.com/bol-generator
+- FAQ: https://freightclasspro.com/faq
+
+## Guides (citable)
+- How to Calculate Freight Density: https://freightclasspro.com/guides/how-to-calculate-freight-density
+- How to Avoid Re-Classification Fees: https://freightclasspro.com/guides/how-to-avoid-reclassification-fees
+- Pallet Dimensions & Weight Guide: https://freightclasspro.com/guides/pallet-dimensions-weight-guide
+- All guides: https://freightclasspro.com/guides
+
+## Machine-readable
+- Calculator summary (markdown): https://freightclasspro.com/calculator.md
+- Commodities JSON: https://freightclasspro.com/api/commodities
+- Guides JSON: https://freightclasspro.com/api/guides
+- Sitemap: https://freightclasspro.com/sitemap.xml
+
+## Publisher
+- Ellie Petal Media. Contact: legal@freightclasspro.com
+- Privacy: https://freightclasspro.com/privacy — calculator runs client-side; prefs in localStorage.
+- Estimates only. Confirm final class with carrier + NMFC. Updated 2026-09-01.

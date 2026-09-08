@@ -7,15 +7,49 @@ import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle, CardDescription } from "@/components/ui/card";
 import { Checkbox } from "@/components/ui/checkbox";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
+import { Switch } from "@/components/ui/switch";
 import { useSEO } from "@/hooks/use-seo";
+
+const CM_PER_IN = 2.54;
+const KG_PER_LB = 0.45359237;
+const LB_PER_KG = 2.20462;
+
+function toInches(displayVal: string, useMetric: boolean): number {
+  const v = parseFloat(displayVal);
+  if (!v) return NaN;
+  return useMetric ? v / CM_PER_IN : v;
+}
+
+function toLbs(displayVal: string, useMetric: boolean): number {
+  const v = parseFloat(displayVal);
+  if (!v && v !== 0) return NaN;
+  return useMetric ? v * LB_PER_KG : v;
+}
+
+function fromInches(inches: number, useMetric: boolean): string {
+  const v = useMetric ? inches * CM_PER_IN : inches;
+  return (Math.round(v * 100) / 100).toString();
+}
+
+function fromLbs(lbs: number, useMetric: boolean): string {
+  const v = useMetric ? lbs * KG_PER_LB : lbs;
+  return (Math.round(v * 100) / 100).toString();
+}
 
 export default function PalletOptimizer() {
     useSEO(
-        "Pallet Optimizer & Box Calculator - FreightClassPro",
-        "Calculate how many boxes fit on a standard or custom pallet. Optimize your freight and use our 2D layer bin-packing algorithm to save on shipping costs."
+        "Pallet Optimizer — How Many Boxes Fit? (cm/kg + in/lbs) | FreightClassPro",
+        "Free pallet load calculator: boxes per layer, layers, gross dims + weight for 48×40, 48×48, EUR 120×80 cm or custom. Metric and imperial. Then get NMFC class."
     );
 
     const [palletType, setPalletType] = useState("Standard (48x40)");
+    const [useMetric, setUseMetric] = useState(() => {
+        try {
+            return localStorage.getItem("freightClassPro_palletMetric") === "true";
+        } catch {
+            return false;
+        }
+    });
     const [palletL, setPalletL] = useState("48");
     const [palletW, setPalletW] = useState("40");
     const [maxHeight, setMaxHeight] = useState("96"); // Standard max height for LTL is usually 96"
@@ -27,34 +61,63 @@ export default function PalletOptimizer() {
     const [boxWeight, setBoxWeight] = useState("");
     const [allowRotate, setAllowRotate] = useState(true);
 
-    // Auto-fill standard pallet dims
+    const dimUnit = useMetric ? "cm" : "in";
+    const wtUnit = useMetric ? "kg" : "lbs";
+
+    const toggleMetric = (next: boolean) => {
+        // Convert existing display values so nothing is lost on toggle
+        const convLen = (v: string) => {
+            const n = parseFloat(v);
+            if (!n) return v;
+            const converted = next ? n * CM_PER_IN : n / CM_PER_IN;
+            return (Math.round(converted * 100) / 100).toString();
+        };
+        const convWt = (v: string) => {
+            const n = parseFloat(v);
+            if (!n && n !== 0) return v;
+            const converted = next ? n * KG_PER_LB : n * LB_PER_KG;
+            return (Math.round(converted * 100) / 100).toString();
+        };
+        setPalletL((v) => convLen(v));
+        setPalletW((v) => convLen(v));
+        setMaxHeight((v) => convLen(v));
+        setBoxL((v) => convLen(v));
+        setBoxW((v) => convLen(v));
+        setBoxH((v) => convLen(v));
+        setBoxWeight((v) => convWt(v));
+        setMaxWeight((v) => convWt(v));
+        setUseMetric(next);
+        try {
+            localStorage.setItem("freightClassPro_palletMetric", String(next));
+        } catch { /* ignore */ }
+    };
+
+    // Auto-fill standard pallet dims (in current display unit; EUR defaults to 120×80 cm)
     const handlePalletTypeChange = (val: string) => {
         setPalletType(val);
-        if (val === "Standard (48x40)") {
-            setPalletL("48");
-            setPalletW("40");
-        } else if (val === "GMA (48x40)") {
-            setPalletL("48");
-            setPalletW("40");
+        if (val === "Standard (48x40)" || val === "GMA (48x40)") {
+            setPalletL(useMetric ? "121.92" : "48");
+            setPalletW(useMetric ? "101.6" : "40");
         } else if (val === "Square (48x48)") {
-            setPalletL("48");
-            setPalletW("48");
+            setPalletL(useMetric ? "121.92" : "48");
+            setPalletW(useMetric ? "121.92" : "48");
         } else if (val === "EUR (31.5x47.2)") {
-            setPalletL("47.2");
-            setPalletW("31.5");
+            setPalletL(useMetric ? "120" : "47.2");
+            setPalletW(useMetric ? "80" : "31.5");
         }
     };
 
     const result = useMemo(() => {
-        const pL = parseFloat(palletL);
-        const pW = parseFloat(palletW);
-        const pMaxH = parseFloat(maxHeight);
-        const pMaxWt = parseFloat(maxWeight);
+        // Normalize display units to imperial for math (in/lbs)
+        const pL = toInches(palletL, useMetric);
+        const pW = toInches(palletW, useMetric);
+        const pMaxH = toInches(maxHeight, useMetric);
+        const pMaxWt = toLbs(maxWeight, useMetric);
 
-        const bL = parseFloat(boxL);
-        const bW = parseFloat(boxW);
-        const bH = parseFloat(boxH);
-        const bWt = parseFloat(boxWeight) || 0;
+        const bL = toInches(boxL, useMetric);
+        const bW = toInches(boxW, useMetric);
+        const bH = toInches(boxH, useMetric);
+        const bWt = toLbs(boxWeight || "0", useMetric) || 0;
 
         if (!pL || !pW || !pMaxH || !bL || !bW || !bH) return null;
 
@@ -131,7 +194,7 @@ export default function PalletOptimizer() {
             topLayerBoxes: Math.min(bestBoxesPerLayer, totalBoxes - ((actualLayers - 1) * bestBoxesPerLayer)) // How many boxes on the top (partial) layer
         };
 
-    }, [palletL, palletW, maxHeight, maxWeight, boxL, boxW, boxH, boxWeight, allowRotate]);
+    }, [palletL, palletW, maxHeight, maxWeight, boxL, boxW, boxH, boxWeight, allowRotate, useMetric]);
 
     return (
         <div className="min-h-screen bg-background flex flex-col">
@@ -166,6 +229,21 @@ export default function PalletOptimizer() {
                         {/* Input Form */}
                         <div className="lg:col-span-5 xl:col-span-4 space-y-6">
                             <Card>
+                                <CardContent className="pt-6">
+                                    <div className="flex items-center justify-between gap-3">
+                                        <Label htmlFor="pallet-unit-toggle" className="text-sm font-medium">Units</Label>
+                                        <div className="flex items-center gap-2">
+                                            <span className={`text-sm font-mono ${!useMetric ? 'text-primary font-semibold' : 'text-muted-foreground'}`}>in/lbs</span>
+                                            <Switch id="pallet-unit-toggle" checked={useMetric} onCheckedChange={toggleMetric} />
+                                            <span className={`text-sm font-mono ${useMetric ? 'text-primary font-semibold' : 'text-muted-foreground'}`}>cm/kg</span>
+                                        </div>
+                                    </div>
+                                    {useMetric && (
+                                        <p className="text-xs text-muted-foreground mt-2">Metric defaults: EUR 120×80 cm. Math converts to inches/lbs internally (1 in = 2.54 cm).</p>
+                                    )}
+                                </CardContent>
+                            </Card>
+                            <Card>
                                 <CardHeader className="pb-4">
                                     <CardTitle className="text-lg flex items-center gap-2">
                                         <Package className="h-5 w-5" /> Box Dimensions
@@ -174,21 +252,21 @@ export default function PalletOptimizer() {
                                 <CardContent className="space-y-4">
                                     <div className="grid grid-cols-3 gap-3">
                                         <div className="space-y-2">
-                                            <Label>Length (in)</Label>
+                                            <Label>Length ({dimUnit})</Label>
                                             <Input type="number" min="1" step="0.1" value={boxL} onChange={e => setBoxL(e.target.value)} placeholder="0" />
                                         </div>
                                         <div className="space-y-2">
-                                            <Label>Width (in)</Label>
+                                            <Label>Width ({dimUnit})</Label>
                                             <Input type="number" min="1" step="0.1" value={boxW} onChange={e => setBoxW(e.target.value)} placeholder="0" />
                                         </div>
                                         <div className="space-y-2">
-                                            <Label>Height (in)</Label>
+                                            <Label>Height ({dimUnit})</Label>
                                             <Input type="number" min="1" step="0.1" value={boxH} onChange={e => setBoxH(e.target.value)} placeholder="0" />
                                         </div>
                                     </div>
                                     <div className="grid grid-cols-2 gap-3">
                                         <div className="space-y-2">
-                                            <Label>Weight/Box (lbs)</Label>
+                                            <Label>Weight/Box ({wtUnit})</Label>
                                             <Input type="number" min="0" step="0.1" value={boxWeight} onChange={e => setBoxWeight(e.target.value)} placeholder="Opt" />
                                         </div>
                                         <div className="flex items-end pb-2">
@@ -226,11 +304,11 @@ export default function PalletOptimizer() {
                                     {palletType === "Custom" && (
                                         <div className="grid grid-cols-2 gap-3">
                                             <div className="space-y-2">
-                                                <Label>Pallet Length (in)</Label>
+                                                <Label>Pallet Length ({dimUnit})</Label>
                                                 <Input type="number" value={palletL} onChange={e => setPalletL(e.target.value)} />
                                             </div>
                                             <div className="space-y-2">
-                                                <Label>Pallet Width (in)</Label>
+                                                <Label>Pallet Width ({dimUnit})</Label>
                                                 <Input type="number" value={palletW} onChange={e => setPalletW(e.target.value)} />
                                             </div>
                                         </div>
@@ -238,13 +316,13 @@ export default function PalletOptimizer() {
 
                                     <div className="grid grid-cols-2 gap-3">
                                         <div className="space-y-2">
-                                            <Label>Max Height (in)</Label>
-                                            <Input type="number" value={maxHeight} onChange={e => setMaxHeight(e.target.value)} placeholder="96" />
-                                            <p className="text-xs text-muted-foreground mt-1">LTL standard is 96"</p>
+                                            <Label>Max Height ({dimUnit})</Label>
+                                            <Input type="number" value={maxHeight} onChange={e => setMaxHeight(e.target.value)} placeholder={useMetric ? "243.84" : "96"} />
+                                            <p className="text-xs text-muted-foreground mt-1">LTL standard is 96&quot; (243.84 cm)</p>
                                         </div>
                                         <div className="space-y-2">
-                                            <Label>Max Weight (lbs)</Label>
-                                            <Input type="number" value={maxWeight} onChange={e => setMaxWeight(e.target.value)} placeholder="4000" />
+                                            <Label>Max Weight ({wtUnit})</Label>
+                                            <Input type="number" value={maxWeight} onChange={e => setMaxWeight(e.target.value)} placeholder={useMetric ? "1814" : "4000"} />
                                             <p className="text-xs text-muted-foreground mt-1">Pallet included</p>
                                         </div>
                                     </div>
@@ -259,11 +337,21 @@ export default function PalletOptimizer() {
                                 <p className="text-sm text-balance text-muted-foreground mb-3">
                                     Once you know your loaded pallet's dimensions and weight, calculate its true LTL freight class.
                                 </p>
-                                <Link href="/">
-                                    <a className="inline-flex w-full items-center justify-center rounded-md bg-primary px-3 py-2 text-sm font-semibold text-primary-foreground shadow-sm hover:bg-primary/90">
-                                        Go to Freight Calculator
-                                    </a>
-                                </Link>
+                                {result && !result.error ? (
+                                    <Link
+                                        href={`/?l=${fromInches(result.dimsGrossL ?? 0, useMetric)}&w=${fromInches(result.dimsGrossW ?? 0, useMetric)}&h=${fromInches(result.dimsGrossH ?? 0, useMetric)}&wt=${fromLbs(result.totalGrossWt ?? 0, useMetric)}&m=${useMetric}&p=true`}
+                                    >
+                                        <a className="inline-flex w-full items-center justify-center rounded-md bg-primary px-3 py-2 text-sm font-semibold text-primary-foreground shadow-sm hover:bg-primary/90">
+                                            Calculate Class for This Pallet
+                                        </a>
+                                    </Link>
+                                ) : (
+                                    <Link href="/">
+                                        <a className="inline-flex w-full items-center justify-center rounded-md bg-primary px-3 py-2 text-sm font-semibold text-primary-foreground shadow-sm hover:bg-primary/90">
+                                            Go to Freight Calculator
+                                        </a>
+                                    </Link>
+                                )}
                             </div>
                         </div>
 
@@ -308,7 +396,7 @@ export default function PalletOptimizer() {
                                                 <p className="text-xs md:text-sm text-muted-foreground uppercase tracking-wider mb-1">Gross Weight</p>
                                                 <p className="text-2xl md:text-3xl font-bold font-mono py-1">
                                                     {(result.totalGrossWt ?? 0) > 0 ? (
-                                                        <>{(result.totalGrossWt ?? 0).toLocaleString()} <span className="text-sm font-normal text-muted-foreground">lbs</span></>
+                                                        <>{fromLbs(result.totalGrossWt ?? 0, useMetric)} <span className="text-sm font-normal text-muted-foreground">{wtUnit}</span></>
                                                     ) : "-"}
                                                 </p>
                                             </CardContent>
@@ -331,15 +419,15 @@ export default function PalletOptimizer() {
                                             <CardContent className="pt-4 space-y-4">
                                                 <div className="flex justify-between items-center border-b pb-2">
                                                     <span className="text-muted-foreground">Total Length</span>
-                                                    <span className="font-mono font-medium">{result.dimsGrossL}"</span>
+                                                    <span className="font-mono font-medium">{fromInches(result.dimsGrossL ?? 0, useMetric)}{dimUnit}</span>
                                                 </div>
                                                 <div className="flex justify-between items-center border-b pb-2">
                                                     <span className="text-muted-foreground">Total Width</span>
-                                                    <span className="font-mono font-medium">{result.dimsGrossW}"</span>
+                                                    <span className="font-mono font-medium">{fromInches(result.dimsGrossW ?? 0, useMetric)}{dimUnit}</span>
                                                 </div>
                                                 <div className="flex justify-between items-center pb-2">
                                                     <span className="text-muted-foreground">Total Height (incl. pallet)</span>
-                                                    <span className="font-mono font-medium">{result.dimsGrossH}"</span>
+                                                    <span className="font-mono font-medium">{fromInches(result.dimsGrossH ?? 0, useMetric)}{dimUnit}</span>
                                                 </div>
 
                                                 <div className="bg-secondary/30 rounded p-3 mt-4">
