@@ -4,10 +4,10 @@
     "basic-memory": {
       "type": "local",
       "command": [
-        "C:\\Users\\Legion\\.local\\bin\\basic-memory.exe",
+        "C:\Users\Unify\.local\bin\basic-memory.exe",
         "mcp",
         "--project",
-        "freight-class-pro"
+        "free-grid-paper"
       ],
       "enabled": true,
       "timeout": 30000
